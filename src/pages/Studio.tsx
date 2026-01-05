@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Sparkles, Send, Paperclip, Image, Video, BarChart3 } from "lucide-react";
+import { useState, useRef } from "react";
+import { Sparkles, Send, Paperclip, Image, Video, BarChart3, X, FileText } from "lucide-react";
 
 const suggestions = [
   {
@@ -24,13 +24,22 @@ const suggestions = [
   },
 ];
 
+interface UploadedFile {
+  name: string;
+  type: string;
+  preview?: string;
+}
+
 export const Studio = () => {
   const [message, setMessage] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSend = () => {
-    if (!message.trim()) return;
-    console.log("Sending:", message);
+    if (!message.trim() && uploadedFiles.length === 0) return;
+    console.log("Sending:", message, uploadedFiles);
     setMessage("");
+    setUploadedFiles([]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -38,6 +47,28 @@ export const Studio = () => {
       e.preventDefault();
       handleSend();
     }
+  };
+
+  const handleFileClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const newFiles: UploadedFile[] = Array.from(files).map((file) => ({
+      name: file.name,
+      type: file.type,
+      preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
+    }));
+
+    setUploadedFiles((prev) => [...prev, ...newFiles]);
+    e.target.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -78,8 +109,44 @@ export const Studio = () => {
       {/* Input Area - Fixed at bottom */}
       <div className="p-4 border-t bg-card">
         <div className="max-w-3xl mx-auto">
+          {/* Uploaded Files Preview */}
+          {uploadedFiles.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2 p-2 bg-muted rounded-xl">
+              {uploadedFiles.map((file, index) => (
+                <div
+                  key={index}
+                  className="relative group flex items-center gap-2 bg-background rounded-lg px-3 py-2 pr-8"
+                >
+                  {file.preview ? (
+                    <img src={file.preview} alt={file.name} className="w-8 h-8 rounded object-cover" />
+                  ) : (
+                    <FileText className="w-5 h-5 text-muted-foreground" />
+                  )}
+                  <span className="text-xs truncate max-w-[120px]">{file.name}</span>
+                  <button
+                    onClick={() => removeFile(index)}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded transition-colors"
+                  >
+                    <X className="w-3 h-3 text-muted-foreground" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="flex items-end gap-2 bg-muted rounded-xl p-2">
-            <button className="p-2 hover:bg-background rounded-lg transition-colors">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*,.pdf,.doc,.docx"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <button
+              onClick={handleFileClick}
+              className="p-2 hover:bg-background rounded-lg transition-colors"
+            >
               <Paperclip className="w-5 h-5 text-muted-foreground" />
             </button>
             <textarea
@@ -92,7 +159,7 @@ export const Studio = () => {
             />
             <button
               onClick={handleSend}
-              disabled={!message.trim()}
+              disabled={!message.trim() && uploadedFiles.length === 0}
               className="p-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Send className="w-5 h-5" />

@@ -1,42 +1,45 @@
 import { Sparkles, Image, Video, FileText, Clock } from "lucide-react";
-import greenGemRing from "@/assets/green-gem-ring.png";
+import diamondEarrings from "@/assets/diamond-earrings.png";
+import goldNecklace from "@/assets/gold-necklace.png";
+import silverBracelet from "@/assets/silver-bracelet.png";
+import gemOnRock from "@/assets/gem-on-rock.png";
 
 const recentItems = [
   {
     id: "1",
-    title: "Green Gem Ring Campaign",
+    title: "Diamond Earrings Showcase",
     type: "image",
     platform: "Instagram",
-    status: "Scheduled",
-    date: "Tue, 7:15 PM",
-    thumbnail: greenGemRing,
+    status: "Posted",
+    date: "Mon, 2:00 PM",
+    thumbnail: diamondEarrings,
   },
   {
     id: "2",
-    title: "绿宝石戒指 美图",
+    title: "Gold Necklace Collection",
     type: "image",
     platform: "RedNote",
-    status: "Scheduled",
-    date: "Tue, 8:30 PM",
-    thumbnail: greenGemRing,
+    status: "Posted",
+    date: "Sun, 6:30 PM",
+    thumbnail: goldNecklace,
   },
   {
     id: "3",
-    title: "Ring Showcase Video",
+    title: "Silver Bracelet Promo",
     type: "video",
-    platform: "Instagram",
-    status: "Draft",
-    date: "Wed, 12:00 PM",
-    thumbnail: greenGemRing,
+    platform: "TikTok",
+    status: "Posted",
+    date: "Sat, 12:00 PM",
+    thumbnail: silverBracelet,
   },
   {
     id: "4",
-    title: "Behind the Ring Story",
+    title: "Gemstone Close-up",
     type: "image",
     platform: "Instagram",
-    status: "Suggested",
-    date: "Next Week",
-    thumbnail: greenGemRing,
+    status: "Posted",
+    date: "Fri, 4:15 PM",
+    thumbnail: gemOnRock,
   },
 ];
 

@@ -203,6 +203,21 @@ const formatTime = (time: string) => {
 
 export const OutputGallery = () => {
   const [selectedPost, setSelectedPost] = useState<ScheduledPost | null>(null);
+  const [activeFilter, setActiveFilter] = useState<"all" | "scheduled" | "draft" | "posted">("all");
+
+  // Sort posts: scheduled first, then drafts, then posted
+  const sortedAndFilteredPosts = scheduledPosts
+    .filter((post) => {
+      if (activeFilter === "all") return true;
+      if (activeFilter === "scheduled") return post.status === "scheduled";
+      if (activeFilter === "draft") return post.status === "draft";
+      if (activeFilter === "posted") return post.status === "posted";
+      return true;
+    })
+    .sort((a, b) => {
+      const statusOrder = { scheduled: 0, draft: 1, posted: 2 };
+      return statusOrder[a.status] - statusOrder[b.status];
+    });
 
   const handlePostClick = (post: ScheduledPost) => {
     setSelectedPost(post);
@@ -227,21 +242,52 @@ export const OutputGallery = () => {
           <p className="text-muted-foreground">Manage your scheduled and draft posts</p>
         </div>
         <div className="flex gap-2">
-          <button className="px-4 py-2 bg-card border rounded-lg text-sm hover:bg-muted transition-colors">
+          <button 
+            onClick={() => setActiveFilter("all")}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              activeFilter === "all" 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-card border hover:bg-muted"
+            }`}
+          >
             All Posts
           </button>
-          <button className="px-4 py-2 bg-card border rounded-lg text-sm hover:bg-muted transition-colors">
+          <button 
+            onClick={() => setActiveFilter("scheduled")}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              activeFilter === "scheduled" 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-card border hover:bg-muted"
+            }`}
+          >
             Scheduled
           </button>
-          <button className="px-4 py-2 bg-card border rounded-lg text-sm hover:bg-muted transition-colors">
+          <button 
+            onClick={() => setActiveFilter("draft")}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              activeFilter === "draft" 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-card border hover:bg-muted"
+            }`}
+          >
             Drafts
+          </button>
+          <button 
+            onClick={() => setActiveFilter("posted")}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              activeFilter === "posted" 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-card border hover:bg-muted"
+            }`}
+          >
+            Posted
           </button>
         </div>
       </div>
 
       {/* Posts Grid */}
       <div className="grid grid-cols-3 gap-6">
-        {scheduledPosts.map((post) => (
+        {sortedAndFilteredPosts.map((post) => (
           <div
             key={post.id}
             onClick={() => handlePostClick(post)}

@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Home } from "@/pages/Home";
 import { Studio } from "@/pages/Studio";
 import { OutputGallery } from "@/pages/OutputGallery";
+import { Assets } from "@/pages/Assets";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -16,12 +17,7 @@ const Index = () => {
       case "output-gallery":
         return <OutputGallery />;
       case "assets":
-        return (
-          <div className="p-8">
-            <h1 className="text-2xl font-semibold mb-2">Assets</h1>
-            <p className="text-muted-foreground">Your brand assets and media library.</p>
-          </div>
-        );
+        return <Assets />;
       default:
         return <Home />;
     }

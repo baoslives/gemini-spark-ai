@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Calendar, Clock, Instagram, MoreHorizontal, Heart } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
+import goldNecklace from "@/assets/gold-necklace.png";
+import diamondEarrings from "@/assets/diamond-earrings.png";
+import silverBracelet from "@/assets/silver-bracelet.png";
 import { PostDetailModal } from "@/components/PostDetailModal";
 
 interface ScheduledPost {
@@ -17,8 +20,57 @@ interface ScheduledPost {
 }
 
 const scheduledPosts: ScheduledPost[] = [
+  // Past Posted Content
   {
     id: "1",
+    title: "Holiday Collection Launch",
+    caption: "Introducing our stunning Holiday Collection ✨ Perfect gifts for your loved ones.\n\n#HolidayJewelry #GiftIdeas #LuxuryGifts",
+    image: goldNecklace,
+    platform: "Instagram",
+    scheduledDate: "2025-12-20",
+    scheduledTime: "18:00",
+    status: "posted",
+    likes: 52341,
+    likedBy: "jewelry_lovers",
+  },
+  {
+    id: "2",
+    title: "Diamond Studs Feature",
+    caption: "Timeless elegance in every sparkle. Our diamond studs are the perfect everyday luxury.\n\n#DiamondEarrings #TimelessJewelry #EverydayLuxury",
+    image: diamondEarrings,
+    platform: "LinkedIn",
+    scheduledDate: "2025-12-22",
+    scheduledTime: "09:00",
+    status: "posted",
+    likes: 8923,
+    likedBy: "professional_style",
+  },
+  {
+    id: "3",
+    title: "节日系列首发",
+    caption: "新年新气象 💚 翡翠手链系列正式上线！\n\n#翡翠手链 #新年礼物 #轻奢珠宝",
+    image: silverBracelet,
+    platform: "RedNote",
+    scheduledDate: "2025-12-28",
+    scheduledTime: "20:00",
+    status: "posted",
+    likes: 31567,
+    likedBy: "小红书时尚",
+  },
+  {
+    id: "4",
+    title: "New Year Unboxing",
+    caption: "POV: You just received the perfect New Year's gift 💎✨ #JewelryTok #Unboxing #LuxuryLifestyle",
+    image: goldNecklace,
+    platform: "TikTok",
+    scheduledDate: "2025-12-31",
+    scheduledTime: "12:00",
+    status: "posted",
+    likes: 128453,
+    likedBy: "tiktok_viral",
+  },
+  {
+    id: "5",
     title: "Green Gem Ring Launch",
     caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!\n\n#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
     image: greenGemRing,
@@ -30,7 +82,7 @@ const scheduledPosts: ScheduledPost[] = [
     likedBy: "craig_love",
   },
   {
-    id: "2",
+    id: "6",
     title: "绿宝石戒指 美图",
     caption: "「优雅，永恒，自信。」全新绿色宝石戒指，专为日常闪耀而生。\n\n#绿宝石戒指 #轻奢风格 #自信穿搭 #日常珠宝",
     image: greenGemRing,
@@ -41,8 +93,9 @@ const scheduledPosts: ScheduledPost[] = [
     likes: 12853,
     likedBy: "xiaomei_style",
   },
+  // Scheduled Content
   {
-    id: "3",
+    id: "7",
     title: "Professional Elegance",
     caption: "Elevate your professional presence with timeless elegance. The Green Gem Ring - for those who lead with style.\n\n#ProfessionalStyle #LuxuryJewelry #CareerWomen",
     image: greenGemRing,
@@ -52,17 +105,17 @@ const scheduledPosts: ScheduledPost[] = [
     status: "scheduled",
   },
   {
-    id: "4",
+    id: "8",
     title: "Behind the Ring Story",
     caption: "Every piece tells a story. Discover the craftsmanship behind our signature green gem ring.\n\n#BehindTheScenes #JewelryCraftsmanship #Handmade",
     image: greenGemRing,
     platform: "Instagram",
     scheduledDate: "2026-01-08",
     scheduledTime: "12:00",
-    status: "draft",
+    status: "scheduled",
   },
   {
-    id: "5",
+    id: "9",
     title: "Ring Reveal Moment",
     caption: "The moment you've been waiting for ✨ #GreenGemRing #JewelryTok #Unboxing #LuxuryLifestyle",
     image: greenGemRing,
@@ -71,14 +124,35 @@ const scheduledPosts: ScheduledPost[] = [
     scheduledTime: "18:00",
     status: "scheduled",
   },
+  // Draft Content
   {
-    id: "6",
+    id: "10",
     title: "User Generated Content",
     caption: "You wear it, we feature it! Tag us to be featured in our next spotlight.\n\n#UGC #CustomerLove #JewelryCommunity",
-    image: greenGemRing,
+    image: diamondEarrings,
     platform: "Instagram",
     scheduledDate: "2026-01-10",
     scheduledTime: "18:00",
+    status: "draft",
+  },
+  {
+    id: "11",
+    title: "Valentine's Preview",
+    caption: "Love is in the details 💕 Sneak peek at our Valentine's collection.\n\n#ValentinesDay #GiftForHer #LuxuryJewelry",
+    image: silverBracelet,
+    platform: "Instagram",
+    scheduledDate: "2026-01-15",
+    scheduledTime: "10:00",
+    status: "draft",
+  },
+  {
+    id: "12",
+    title: "情人节系列预告",
+    caption: "爱在细节中 💕 情人节系列抢先看！\n\n#情人节礼物 #轻奢珠宝 #送礼首选",
+    image: goldNecklace,
+    platform: "RedNote",
+    scheduledDate: "2026-01-15",
+    scheduledTime: "20:00",
     status: "draft",
   },
 ];

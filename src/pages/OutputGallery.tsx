@@ -319,7 +319,7 @@ export const OutputGallery = () => {
       </div>
 
       {/* Posts Grid */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-5 gap-3">
         {sortedAndFilteredPosts.map((post) => (
           <div
             key={post.id}

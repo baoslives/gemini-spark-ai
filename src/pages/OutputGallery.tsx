@@ -21,7 +21,7 @@ interface ScheduledPost {
   platform: "Instagram" | "RedNote" | "LinkedIn" | "TikTok";
   scheduledDate: string;
   scheduledTime: string;
-  status: "scheduled" | "draft" | "posted";
+  status: "scheduled" | "suggested" | "draft" | "posted";
   likes?: number;
   likedBy?: string;
   mediaType?: "image" | "video" | "carousel";
@@ -67,7 +67,7 @@ const scheduledPosts: ScheduledPost[] = [
     platform: "Instagram",
     scheduledDate: "2026-01-08",
     scheduledTime: "12:00",
-    status: "scheduled",
+    status: "suggested",
     mediaType: "carousel",
     carouselImages: [gemOnRock, greenGemRing],
   },
@@ -196,6 +196,8 @@ const getStatusBadge = (status: string) => {
   switch (status) {
     case "scheduled":
       return <span className="text-xs px-2 py-1 rounded-full bg-emerald-light text-emerald">Scheduled</span>;
+    case "suggested":
+      return <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-600">Suggested</span>;
     case "draft":
       return <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">Draft</span>;
     case "posted":
@@ -223,19 +225,20 @@ const formatTime = (time: string) => {
 
 export const OutputGallery = () => {
   const [selectedPost, setSelectedPost] = useState<ScheduledPost | null>(null);
-  const [activeFilter, setActiveFilter] = useState<"all" | "scheduled" | "draft" | "posted">("all");
+  const [activeFilter, setActiveFilter] = useState<"all" | "scheduled" | "suggested" | "draft" | "posted">("all");
 
-  // Sort posts: scheduled first, then drafts, then posted
+  // Sort posts: scheduled first, then suggested, then drafts, then posted
   const sortedAndFilteredPosts = scheduledPosts
     .filter((post) => {
       if (activeFilter === "all") return true;
       if (activeFilter === "scheduled") return post.status === "scheduled";
+      if (activeFilter === "suggested") return post.status === "suggested";
       if (activeFilter === "draft") return post.status === "draft";
       if (activeFilter === "posted") return post.status === "posted";
       return true;
     })
     .sort((a, b) => {
-      const statusOrder = { scheduled: 0, draft: 1, posted: 2 };
+      const statusOrder = { scheduled: 0, suggested: 1, draft: 2, posted: 3 };
       return statusOrder[a.status] - statusOrder[b.status];
     });
 
@@ -281,6 +284,16 @@ export const OutputGallery = () => {
             }`}
           >
             Scheduled
+          </button>
+          <button 
+            onClick={() => setActiveFilter("suggested")}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              activeFilter === "suggested" 
+                ? "bg-primary text-primary-foreground" 
+                : "bg-card border hover:bg-muted"
+            }`}
+          >
+            Suggested
           </button>
           <button 
             onClick={() => setActiveFilter("draft")}

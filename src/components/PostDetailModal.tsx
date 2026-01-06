@@ -14,7 +14,7 @@ interface ScheduledPost {
   platform: string;
   scheduledDate: string;
   scheduledTime: string;
-  status: "scheduled" | "draft" | "posted";
+  status: "scheduled" | "suggested" | "draft" | "posted";
   likes?: number;
   likedBy?: string;
   mediaType?: "image" | "video" | "carousel";

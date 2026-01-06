@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Calendar, Clock, Instagram, MoreHorizontal, Heart } from "lucide-react";
+import { useState, useRef } from "react";
+import { Calendar, Clock, Instagram, MoreHorizontal, Heart, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import goldNecklace from "@/assets/gold-necklace.png";
 import diamondEarrings from "@/assets/diamond-earrings.png";
 import silverBracelet from "@/assets/silver-bracelet.png";
+import ringVideoLaunch from "@/assets/ring-video-launch.mp4";
+import gemOnRock from "@/assets/gem-on-rock.png";
 import { PostDetailModal } from "@/components/PostDetailModal";
 
 interface ScheduledPost {
@@ -17,6 +19,9 @@ interface ScheduledPost {
   status: "scheduled" | "draft" | "posted";
   likes?: number;
   likedBy?: string;
+  mediaType?: "image" | "video" | "carousel";
+  video?: string;
+  carouselImages?: string[];
 }
 
 const scheduledPosts: ScheduledPost[] = [
@@ -30,6 +35,8 @@ const scheduledPosts: ScheduledPost[] = [
     scheduledDate: "2026-01-07",
     scheduledTime: "19:15",
     status: "scheduled",
+    mediaType: "video",
+    video: ringVideoLaunch,
   },
   {
     id: "2",
@@ -45,11 +52,13 @@ const scheduledPosts: ScheduledPost[] = [
     id: "3",
     title: "Behind the Ring Story",
     caption: "Every piece tells a story. Discover the craftsmanship behind our signature green gem ring.\n\n#BehindTheScenes #JewelryCraftsmanship #Handmade",
-    image: greenGemRing,
+    image: gemOnRock,
     platform: "Instagram",
     scheduledDate: "2026-01-08",
     scheduledTime: "12:00",
     status: "scheduled",
+    mediaType: "carousel",
+    carouselImages: [gemOnRock, greenGemRing],
   },
   // Draft Content
   {
@@ -293,13 +302,47 @@ export const OutputGallery = () => {
             onClick={() => handlePostClick(post)}
             className="bg-card rounded-xl border overflow-hidden hover:border-foreground/20 transition-all cursor-pointer group"
           >
-            {/* Image */}
+            {/* Media */}
             <div className="aspect-square relative">
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
+              {post.mediaType === "video" && post.video ? (
+                <div className="relative w-full h-full">
+                  <video
+                    src={post.video}
+                    className="w-full h-full object-cover"
+                    muted
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                      <Play className="w-5 h-5 text-foreground ml-0.5" />
+                    </div>
+                  </div>
+                </div>
+              ) : post.mediaType === "carousel" && post.carouselImages ? (
+                <div className="relative w-full h-full">
+                  <img
+                    src={post.carouselImages[0]}
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+                    {post.carouselImages.map((_, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`} 
+                      />
+                    ))}
+                  </div>
+                  <div className="absolute top-3 right-12 bg-black/50 backdrop-blur-sm rounded px-1.5 py-0.5">
+                    <span className="text-white text-[10px] font-medium">1/{post.carouselImages.length}</span>
+                  </div>
+                </div>
+              ) : (
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-full object-cover"
+                />
+              )}
               <div className="absolute top-3 left-3">
                 {getStatusBadge(post.status)}
               </div>

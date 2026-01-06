@@ -1,6 +1,11 @@
 import { useState, useRef } from "react";
 import { X, RefreshCw, Instagram, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Check, Play } from "lucide-react";
 
+interface CarouselItem {
+  type: "image" | "video";
+  src: string;
+}
+
 interface ScheduledPost {
   id: string;
   title: string;
@@ -15,6 +20,7 @@ interface ScheduledPost {
   mediaType?: "image" | "video" | "carousel";
   video?: string;
   carouselImages?: string[];
+  carouselItems?: CarouselItem[];
 }
 
 interface PostDetailModalProps {
@@ -137,6 +143,51 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
                         </div>
                       </button>
                     )}
+                  </div>
+                ) : post.mediaType === "carousel" && post.carouselItems ? (
+                  <div className="relative w-full h-full">
+                    {post.carouselItems[carouselIndex].type === "video" ? (
+                      <div className="relative w-full h-full">
+                        <video
+                          ref={videoRef}
+                          src={post.carouselItems[carouselIndex].src}
+                          className="w-full h-full object-cover"
+                          loop
+                          onEnded={() => setIsPlaying(false)}
+                        />
+                        {!isPlaying && (
+                          <button
+                            onClick={toggleVideo}
+                            className="absolute inset-0 flex items-center justify-center bg-black/20"
+                          >
+                            <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
+                              <Play className="w-7 h-7 text-foreground ml-1" />
+                            </div>
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      <img
+                        src={post.carouselItems[carouselIndex].src}
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {post.carouselItems.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setCarouselIndex(idx);
+                            setIsPlaying(false);
+                            if (videoRef.current) videoRef.current.pause();
+                          }}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            idx === carouselIndex ? "bg-white" : "bg-white/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
                   </div>
                 ) : post.mediaType === "carousel" && post.carouselImages ? (
                   <div className="relative w-full h-full">

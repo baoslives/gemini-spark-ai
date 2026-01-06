@@ -19,9 +19,12 @@ interface PostDetailModalProps {
 }
 
 const platforms = [
-  { id: "instagram", name: "Instagram", icon: Instagram },
-  { id: "facebook", name: "Facebook", icon: null },
-  { id: "twitter", name: "X (Twitter)", icon: null },
+  { id: "instagram", name: "Instagram", icon: Instagram, iconText: null },
+  { id: "rednote", name: "小红书 (RedNote)", icon: null, iconText: "小红书" },
+  { id: "linkedin", name: "LinkedIn", icon: null, iconText: "in" },
+  { id: "tiktok", name: "TikTok", icon: null, iconText: "♪" },
+  { id: "facebook", name: "Facebook", icon: null, iconText: "f" },
+  { id: "twitter", name: "X (Twitter)", icon: null, iconText: "𝕏" },
 ];
 
 export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProps) => {
@@ -170,8 +173,13 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
                 {platform.icon ? (
                   <platform.icon className="w-5 h-5" />
                 ) : (
-                  <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-xs font-bold">
-                    {platform.name[0]}
+                  <div className={`w-5 h-5 rounded flex items-center justify-center text-xs font-bold ${
+                    platform.id === "rednote" ? "bg-red-500 text-white" : 
+                    platform.id === "linkedin" ? "bg-blue-600 text-white" :
+                    platform.id === "tiktok" ? "bg-black text-white" :
+                    "bg-muted"
+                  }`}>
+                    {platform.iconText}
                   </div>
                 )}
                 <span className="text-sm flex-1 text-left">{platform.name}</span>

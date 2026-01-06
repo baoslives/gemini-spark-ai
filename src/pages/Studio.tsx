@@ -40,6 +40,8 @@ interface Message {
   showMedia?: boolean;
   mediaType?: "image" | "video" | "both";
   showChart?: boolean;
+  isGenerating?: boolean;
+  generatingSteps?: { icon: string; text: string; done: boolean }[];
 }
 
 // Scripted conversation flow
@@ -65,12 +67,12 @@ const scriptedConversation: { trigger: string; response: Message }[] = [
     response: {
       id: "ai-3",
       role: "ai",
-      content: `Got it. Please wait while I prepare your content…
-
-🎨 Generating image: young woman wearing the green gem ring
-🎞 Creating a 5s product video clip with branding and shimmer animation
-
-✅ Done! Here's your preview:`,
+      content: `Got it. Please wait while I prepare your content…`,
+      isGenerating: true,
+      generatingSteps: [
+        { icon: "🎨", text: "Generating image: young woman wearing the green gem ring", done: false },
+        { icon: "🎞", text: "Creating a 5s product video clip with branding and shimmer animation", done: false },
+      ],
       showMedia: true,
       mediaType: "both",
     },
@@ -282,6 +284,87 @@ const EngagementChart = () => {
         • Positive themes: elegance, colour tone, styling ideas
         • Negative mentions: KOL comments, 1 product quality remark
       </p>
+    </div>
+  );
+};
+
+// Generating animation component (ChatGPT-style)
+const GeneratingAnimation = ({ 
+  steps, 
+  onComplete, 
+  messageId 
+}: { 
+  steps: { icon: string; text: string; done: boolean }[]; 
+  onComplete: () => void;
+  messageId: string;
+}) => {
+  const [currentSteps, setCurrentSteps] = useState(steps.map(s => ({ ...s, done: false })));
+  const [showDone, setShowDone] = useState(false);
+  const [showMedia, setShowMedia] = useState(false);
+
+  useEffect(() => {
+    // Animate steps one by one
+    const timers: NodeJS.Timeout[] = [];
+    
+    currentSteps.forEach((_, index) => {
+      const timer = setTimeout(() => {
+        setCurrentSteps(prev => prev.map((step, i) => 
+          i === index ? { ...step, done: true } : step
+        ));
+      }, (index + 1) * 1500);
+      timers.push(timer);
+    });
+
+    // Show "Done!" after all steps
+    const doneTimer = setTimeout(() => {
+      setShowDone(true);
+    }, currentSteps.length * 1500 + 500);
+    timers.push(doneTimer);
+
+    // Show media after "Done!"
+    const mediaTimer = setTimeout(() => {
+      setShowMedia(true);
+      onComplete();
+    }, currentSteps.length * 1500 + 1000);
+    timers.push(mediaTimer);
+
+    return () => timers.forEach(t => clearTimeout(t));
+  }, [messageId]);
+
+  return (
+    <div className="mt-3 space-y-2">
+      {currentSteps.map((step, index) => (
+        <div 
+          key={index} 
+          className="flex items-center gap-2 text-sm animate-fade-in"
+          style={{ animationDelay: `${index * 200}ms` }}
+        >
+          <span>{step.icon}</span>
+          <span className={step.done ? "text-foreground" : "text-muted-foreground"}>
+            {step.text}
+          </span>
+          {!step.done && (
+            <span className="inline-flex gap-0.5 ml-1">
+              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+            </span>
+          )}
+          {step.done && <span className="text-emerald-500">✓</span>}
+        </div>
+      ))}
+      
+      {showDone && (
+        <div className="flex items-center gap-2 text-sm font-medium text-emerald-500 animate-fade-in mt-3">
+          ✅ Done! Here's your preview:
+        </div>
+      )}
+      
+      {showMedia && (
+        <div className="animate-fade-in">
+          <MediaPreview type="both" />
+        </div>
+      )}
     </div>
   );
 };
@@ -536,8 +619,13 @@ export const Studio = () => {
                   }`}>
                     <div className="whitespace-pre-wrap">{msg.content}</div>
                     
+                    {/* Show generating animation */}
+                    {msg.isGenerating && msg.generatingSteps && (
+                      <GeneratingAnimation steps={msg.generatingSteps} onComplete={() => {}} messageId={msg.id} />
+                    )}
+                    
                     {/* Show media if applicable */}
-                    {msg.showMedia && msg.mediaType && (
+                    {msg.showMedia && msg.mediaType && !msg.isGenerating && (
                       <MediaPreview type={msg.mediaType} />
                     )}
                     

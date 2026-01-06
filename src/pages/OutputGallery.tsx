@@ -8,6 +8,11 @@ import ringVideoLaunch from "@/assets/ring-video-launch.mp4";
 import gemOnRock from "@/assets/gem-on-rock.png";
 import { PostDetailModal } from "@/components/PostDetailModal";
 
+interface CarouselItem {
+  type: "image" | "video";
+  src: string;
+}
+
 interface ScheduledPost {
   id: string;
   title: string;
@@ -22,6 +27,7 @@ interface ScheduledPost {
   mediaType?: "image" | "video" | "carousel";
   video?: string;
   carouselImages?: string[];
+  carouselItems?: CarouselItem[];
 }
 
 const scheduledPosts: ScheduledPost[] = [
@@ -47,6 +53,11 @@ const scheduledPosts: ScheduledPost[] = [
     scheduledDate: "2026-01-07",
     scheduledTime: "20:30",
     status: "scheduled",
+    mediaType: "carousel",
+    carouselItems: [
+      { type: "image", src: greenGemRing },
+      { type: "video", src: ringVideoLaunch },
+    ],
   },
   {
     id: "3",
@@ -315,6 +326,40 @@ export const OutputGallery = () => {
                     <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
                       <Play className="w-5 h-5 text-foreground ml-0.5" />
                     </div>
+                  </div>
+                </div>
+              ) : post.mediaType === "carousel" && post.carouselItems ? (
+                <div className="relative w-full h-full">
+                  {post.carouselItems[0].type === "image" ? (
+                    <img
+                      src={post.carouselItems[0].src}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      <video
+                        src={post.carouselItems[0].src}
+                        className="w-full h-full object-cover"
+                        muted
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
+                          <Play className="w-5 h-5 text-foreground ml-0.5" />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+                    {post.carouselItems.map((_, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`} 
+                      />
+                    ))}
+                  </div>
+                  <div className="absolute top-3 right-12 bg-black/50 backdrop-blur-sm rounded px-1.5 py-0.5">
+                    <span className="text-white text-[10px] font-medium">1/{post.carouselItems.length}</span>
                   </div>
                 </div>
               ) : post.mediaType === "carousel" && post.carouselImages ? (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, Clock, Instagram, MoreHorizontal } from "lucide-react";
+import { Calendar, Clock, Instagram, MoreHorizontal, Heart } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import { PostDetailModal } from "@/components/PostDetailModal";
 
@@ -8,10 +8,12 @@ interface ScheduledPost {
   title: string;
   caption: string;
   image: string;
-  platform: string;
+  platform: "Instagram" | "RedNote" | "LinkedIn" | "TikTok";
   scheduledDate: string;
   scheduledTime: string;
   status: "scheduled" | "draft" | "posted";
+  likes?: number;
+  likedBy?: string;
 }
 
 const scheduledPosts: ScheduledPost[] = [
@@ -21,9 +23,11 @@ const scheduledPosts: ScheduledPost[] = [
     caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!\n\n#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
     image: greenGemRing,
     platform: "Instagram",
-    scheduledDate: "2026-01-07",
+    scheduledDate: "2026-01-05",
     scheduledTime: "19:15",
-    status: "scheduled",
+    status: "posted",
+    likes: 44686,
+    likedBy: "craig_love",
   },
   {
     id: "2",
@@ -31,12 +35,24 @@ const scheduledPosts: ScheduledPost[] = [
     caption: "「优雅，永恒，自信。」全新绿色宝石戒指，专为日常闪耀而生。\n\n#绿宝石戒指 #轻奢风格 #自信穿搭 #日常珠宝",
     image: greenGemRing,
     platform: "RedNote",
-    scheduledDate: "2026-01-07",
+    scheduledDate: "2026-01-05",
     scheduledTime: "20:30",
-    status: "scheduled",
+    status: "posted",
+    likes: 12853,
+    likedBy: "xiaomei_style",
   },
   {
     id: "3",
+    title: "Professional Elegance",
+    caption: "Elevate your professional presence with timeless elegance. The Green Gem Ring - for those who lead with style.\n\n#ProfessionalStyle #LuxuryJewelry #CareerWomen",
+    image: greenGemRing,
+    platform: "LinkedIn",
+    scheduledDate: "2026-01-07",
+    scheduledTime: "09:00",
+    status: "scheduled",
+  },
+  {
+    id: "4",
     title: "Behind the Ring Story",
     caption: "Every piece tells a story. Discover the craftsmanship behind our signature green gem ring.\n\n#BehindTheScenes #JewelryCraftsmanship #Handmade",
     image: greenGemRing,
@@ -46,7 +62,17 @@ const scheduledPosts: ScheduledPost[] = [
     status: "draft",
   },
   {
-    id: "4",
+    id: "5",
+    title: "Ring Reveal Moment",
+    caption: "The moment you've been waiting for ✨ #GreenGemRing #JewelryTok #Unboxing #LuxuryLifestyle",
+    image: greenGemRing,
+    platform: "TikTok",
+    scheduledDate: "2026-01-09",
+    scheduledTime: "18:00",
+    status: "scheduled",
+  },
+  {
+    id: "6",
     title: "User Generated Content",
     caption: "You wear it, we feature it! Tag us to be featured in our next spotlight.\n\n#UGC #CustomerLove #JewelryCommunity",
     image: greenGemRing,
@@ -62,7 +88,11 @@ const getPlatformIcon = (platform: string) => {
     case "Instagram":
       return <Instagram className="w-4 h-4" />;
     case "RedNote":
-      return <span className="text-xs font-bold">小红书</span>;
+      return <span className="text-xs font-bold text-red-500">小红书</span>;
+    case "LinkedIn":
+      return <span className="text-xs font-bold text-blue-600">in</span>;
+    case "TikTok":
+      return <span className="text-xs font-bold">♪</span>;
     default:
       return null;
   }
@@ -170,16 +200,26 @@ export const OutputGallery = () => {
               </div>
               <p className="font-medium text-sm mb-2 line-clamp-1">{post.title}</p>
               <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{post.caption}</p>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
-                  <span>{formatDate(post.scheduledDate)}</span>
+              {post.status === "posted" && post.likes && post.likedBy ? (
+                <div className="flex items-center gap-1.5 text-xs">
+                  <Heart className="w-3 h-3 fill-red-500 text-red-500" />
+                  <span>
+                    Liked by <span className="font-medium">{post.likedBy}</span> and{" "}
+                    <span className="font-medium">{post.likes.toLocaleString()} others</span>
+                  </span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  <span>{formatTime(post.scheduledTime)}</span>
+              ) : (
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="w-3 h-3" />
+                    <span>{formatDate(post.scheduledDate)}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>{formatTime(post.scheduledTime)}</span>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         ))}

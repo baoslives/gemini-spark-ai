@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { X, RefreshCw, Instagram, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Check } from "lucide-react";
+import { useState, useRef } from "react";
+import { X, RefreshCw, Instagram, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Check, Play } from "lucide-react";
 
 interface ScheduledPost {
   id: string;
@@ -10,6 +10,11 @@ interface ScheduledPost {
   scheduledDate: string;
   scheduledTime: string;
   status: "scheduled" | "draft" | "posted";
+  likes?: number;
+  likedBy?: string;
+  mediaType?: "image" | "video" | "carousel";
+  video?: string;
+  carouselImages?: string[];
 }
 
 interface PostDetailModalProps {
@@ -33,6 +38,20 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
   const [scheduledDate, setScheduledDate] = useState(post.scheduledDate);
   const [scheduledTime, setScheduledTime] = useState(post.scheduledTime);
   const [customizeEnabled, setCustomizeEnabled] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   const togglePlatform = (platformId: string) => {
     setSelectedPlatforms((prev) =>
@@ -97,9 +116,50 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
                 <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
               </div>
 
-              {/* Image */}
-              <div className="aspect-square">
-                <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+              {/* Media */}
+              <div className="aspect-square relative">
+                {post.mediaType === "video" && post.video ? (
+                  <div className="relative w-full h-full">
+                    <video
+                      ref={videoRef}
+                      src={post.video}
+                      className="w-full h-full object-cover"
+                      loop
+                      onEnded={() => setIsPlaying(false)}
+                    />
+                    {!isPlaying && (
+                      <button
+                        onClick={toggleVideo}
+                        className="absolute inset-0 flex items-center justify-center bg-black/20"
+                      >
+                        <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center">
+                          <Play className="w-7 h-7 text-foreground ml-1" />
+                        </div>
+                      </button>
+                    )}
+                  </div>
+                ) : post.mediaType === "carousel" && post.carouselImages ? (
+                  <div className="relative w-full h-full">
+                    <img
+                      src={post.carouselImages[carouselIndex]}
+                      alt={post.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                      {post.carouselImages.map((_, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCarouselIndex(idx)}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            idx === carouselIndex ? "bg-white" : "bg-white/50"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                )}
               </div>
 
               {/* Actions */}
@@ -112,12 +172,14 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
                   </div>
                   <Bookmark className="w-6 h-6" />
                 </div>
-                <p className="text-sm mb-1">
-                  <span className="font-semibold">Liked by </span>
-                  <span className="font-semibold">craig_love</span>
-                  <span> and </span>
-                  <span className="font-semibold">44,686 others</span>
-                </p>
+                {post.status === "posted" && post.likes && post.likedBy ? (
+                  <p className="text-sm mb-1">
+                    <span className="font-semibold">Liked by </span>
+                    <span className="font-semibold">{post.likedBy}</span>
+                    <span> and </span>
+                    <span className="font-semibold">{post.likes.toLocaleString()} others</span>
+                  </p>
+                ) : null}
                 <p className="text-sm">
                   <span className="font-semibold">Desiree Gems</span>{" "}
                   {caption.split("\n")[0]}

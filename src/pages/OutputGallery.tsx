@@ -284,7 +284,7 @@ const PostCard = ({
     switch (post.status) {
       case "scheduled":
         return (
-          <span className="absolute top-2 left-2 px-2 py-1 bg-emerald-500 text-white text-xs rounded">
+          <span className="absolute top-2 left-2 px-2 py-1 bg-purple-500 text-white text-xs rounded">
             Scheduled
           </span>
         );

@@ -23,7 +23,7 @@ interface Post {
 const posts: Post[] = [
   {
     id: "1",
-    platforms: [{ name: "Instagram" }],
+    platforms: [{ name: "Instagram" }, { name: "RedNote" }],
     media: ringVideo,
     mediaType: "video",
     status: "scheduled",

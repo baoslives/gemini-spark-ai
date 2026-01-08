@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Home } from "@/pages/Home";
 import { Studio } from "@/pages/Studio";
+import { StudioMockup } from "@/pages/StudioMockup";
 import { OutputGallery } from "@/pages/OutputGallery";
 import { Assets } from "@/pages/Assets";
 
@@ -12,6 +13,8 @@ const Index = () => {
     switch (activeTab) {
       case "home":
         return <Home />;
+      case "studio-mockup":
+        return <StudioMockup />;
       case "studio":
         return <Studio />;
       case "output-gallery":

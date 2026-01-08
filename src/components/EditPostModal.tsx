@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { X, Instagram, Facebook, Upload, Sparkles, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Calendar, Clock, Play } from "lucide-react";
+import { X, Instagram, Facebook, Upload, Sparkles, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Calendar as CalendarIcon, Clock, Play } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 interface Post {
   id: string;
@@ -213,6 +217,20 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
 
 // Schedule View Component
 const ScheduleView = ({ post, onClose, onBack }: { post: Post; onClose: () => void; onBack: () => void }) => {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    post.scheduledDate ? new Date(post.scheduledDate) : new Date()
+  );
+  const [selectedTime, setSelectedTime] = useState(post.scheduledTime || "7:15 PM");
+  const [dateOpen, setDateOpen] = useState(false);
+  const [timeOpen, setTimeOpen] = useState(false);
+
+  const timeOptions = [
+    "6:00 AM", "6:30 AM", "7:00 AM", "7:30 AM", "8:00 AM", "8:30 AM", "9:00 AM", "9:30 AM",
+    "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM",
+    "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM",
+    "6:00 PM", "6:30 PM", "7:00 PM", "7:15 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM", "9:30 PM", "10:00 PM"
+  ];
+
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-background rounded-2xl max-w-lg w-full p-8">
@@ -264,14 +282,58 @@ const ScheduleView = ({ post, onClose, onBack }: { post: Post; onClose: () => vo
 
           {/* Date & Time Pickers */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-2 px-4 py-3 border rounded-lg">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm">Tuesday, 30 July 2025</span>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-3 border rounded-lg">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span className="text-sm">7:15 PM</span>
-            </div>
+            {/* Date Picker */}
+            <Popover open={dateOpen} onOpenChange={setDateOpen}>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-2 px-4 py-3 border rounded-lg hover:bg-muted transition-colors text-left">
+                  <CalendarIcon className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    {selectedDate ? format(selectedDate, "EEEE, d MMMM yyyy") : "Select date"}
+                  </span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(date) => {
+                    setSelectedDate(date);
+                    setDateOpen(false);
+                  }}
+                  initialFocus
+                  className={cn("p-3 pointer-events-auto")}
+                />
+              </PopoverContent>
+            </Popover>
+
+            {/* Time Picker */}
+            <Popover open={timeOpen} onOpenChange={setTimeOpen}>
+              <PopoverTrigger asChild>
+                <button className="flex items-center gap-2 px-4 py-3 border rounded-lg hover:bg-muted transition-colors text-left">
+                  <Clock className="w-4 h-4 text-muted-foreground" />
+                  <span className="text-sm">{selectedTime}</span>
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-48 p-0" align="start">
+                <div className="max-h-60 overflow-y-auto p-2">
+                  {timeOptions.map((time) => (
+                    <button
+                      key={time}
+                      onClick={() => {
+                        setSelectedTime(time);
+                        setTimeOpen(false);
+                      }}
+                      className={cn(
+                        "w-full text-left px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors",
+                        selectedTime === time && "bg-muted font-medium"
+                      )}
+                    >
+                      {time}
+                    </button>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
           {/* Action Buttons */}

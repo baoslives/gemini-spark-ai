@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
-import { FileText, Palette, Film, CheckCircle2, Clock, TrendingUp, TrendingDown, AlertTriangle } from "lucide-react";
+import { FileText, Palette, Film, CheckCircle2, TrendingUp, AlertTriangle, Play, Trash2 } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface ChatMessageProps {
-  role: "user" | "ai";
+  role: "user" | "ai" | "system";
   content: string;
-  type?: "text" | "file-upload" | "generating" | "content-preview" | "schedule-confirm" | "analytics" | "weekly-analytics" | "comment-insight" | "suggestions";
+  type?: "text" | "file-upload" | "generating" | "content-preview" | "schedule-confirm" | "analytics" | "weekly-analytics" | "comment-insight" | "suggestions" | "system-prompt";
   metadata?: {
     fileName?: string;
     platforms?: string[];
@@ -38,6 +38,24 @@ interface ChatMessageProps {
 export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMessageProps) => {
   const renderContent = () => {
     switch (type) {
+      case "system-prompt":
+        return (
+          <div className="space-y-4">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
+            {metadata?.fileName && (
+              <div className="flex items-center gap-3 p-3 bg-zinc-700 rounded-lg">
+                <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-red-400" />
+                </div>
+                <span className="text-sm font-medium flex-1">{metadata.fileName}</span>
+                <button className="p-1 hover:bg-zinc-600 rounded transition-colors">
+                  <Trash2 className="w-4 h-4 text-zinc-400" />
+                </button>
+              </div>
+            )}
+          </div>
+        );
+
       case "file-upload":
         return (
           <div className="flex items-center gap-3 p-3 bg-secondary rounded-lg">
@@ -354,23 +372,35 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
     }
   };
 
+  // System prompt styling (dark card, right-aligned)
+  if (role === "system") {
+    return (
+      <div className="flex justify-end animate-slide-up">
+        <div className="max-w-xl bg-zinc-800 text-zinc-100 rounded-2xl p-5">
+          {renderContent()}
+        </div>
+      </div>
+    );
+  }
+
+  // AI message with play button icon
+  if (role === "ai") {
+    return (
+      <div className="flex gap-3 animate-slide-up justify-start">
+        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-zinc-900 flex items-center justify-center">
+          <Play className="w-4 h-4 text-white fill-white" />
+        </div>
+        <div className="max-w-2xl bg-muted/50 rounded-2xl px-4 py-3">
+          {renderContent()}
+        </div>
+      </div>
+    );
+  }
+
+  // User message (simple, no avatar)
   return (
-    <div className={cn(
-      "flex gap-3 animate-slide-up",
-      role === "user" ? "justify-end" : "justify-start"
-    )}>
-      <div className={cn(
-        "max-w-2xl",
-        role === "user" ? "chat-bubble-user" : "chat-bubble-ai"
-      )}>
-        {role === "ai" && (
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-xs text-primary-foreground font-medium">AI</span>
-            </div>
-            <span className="text-xs text-muted-foreground">Marketing Assistant</span>
-          </div>
-        )}
+    <div className="flex gap-3 animate-slide-up justify-end">
+      <div className="max-w-2xl chat-bubble-user">
         {renderContent()}
       </div>
     </div>

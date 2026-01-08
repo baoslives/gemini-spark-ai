@@ -41,7 +41,7 @@ const posts: Post[] = [
   {
     id: "2",
     platforms: [{ name: "RedNote" }],
-    media: goldNecklace,
+    media: greenGemRing,
     mediaType: "image",
     hasCarousel: true,
     status: "scheduled",
@@ -65,7 +65,7 @@ const posts: Post[] = [
   {
     id: "4",
     platforms: [{ name: "Instagram" }],
-    media: greenGemRing,
+    media: goldNecklace,
     mediaType: "image",
     status: "draft",
     scheduledDate: "Sat, Jan 10",

@@ -9,7 +9,7 @@ interface SidebarProps {
 const navItems = [
   { id: "home", label: "HOME" },
   { id: "studio", label: "STUDIO" },
-  { id: "output-gallery", label: "OUTPUT GALLERY" },
+  { id: "output-gallery", label: "SOCIAL DASHBOARD" },
   { id: "assets", label: "ASSETS" },
 ];
 

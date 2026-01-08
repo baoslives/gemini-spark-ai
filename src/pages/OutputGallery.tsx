@@ -139,7 +139,7 @@ const postedEngagement: Record<string, { likedBy: string; likes: string }> = {
   "10": { likedBy: "ruby_collector", likes: "45,672 others" },
 };
 
-type FilterType = "all" | "scheduled" | "suggested" | "draft" | "posted";
+type FilterType = "all" | "scheduled" | "draft" | "posted";
 
 const getPlatformDisplay = (platform: string) => {
   switch (platform) {
@@ -164,15 +164,16 @@ export const OutputGallery = () => {
   const [showAnalytics, setShowAnalytics] = useState(false);
 
   const filters: { id: FilterType; label: string }[] = [
-    { id: "all", label: "All Posts" },
+    { id: "all", label: "All" },
     { id: "scheduled", label: "Scheduled" },
-    { id: "suggested", label: "Suggested" },
-    { id: "draft", label: "Drafts" },
-    { id: "posted", label: "Posted" },
+    { id: "draft", label: "Draft" },
+    { id: "posted", label: "Published" },
   ];
 
   const filteredPosts = posts.filter((post) => {
     if (activeFilter === "all") return true;
+    if (activeFilter === "posted") return post.status === "posted";
+    if (activeFilter === "scheduled") return post.status === "scheduled" || post.status === "suggested";
     return post.status === activeFilter;
   });
 
@@ -195,32 +196,33 @@ export const OutputGallery = () => {
   return (
     <div className="p-8">
       {/* Header */}
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-semibold mb-1">Output Gallery</h1>
-          <p className="text-muted-foreground">
-            Manage your scheduled and draft posts
-          </p>
-        </div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-semibold mb-1">Social Post</h1>
+        <p className="text-muted-foreground mb-6">
+          Organize your generations, uploads, and history.
+        </p>
 
-        <div className="flex gap-2">
-          {filters.map((filter) => {
-            const getFilterStyle = () => {
-              if (activeFilter !== filter.id) return "bg-background hover:bg-muted border-border";
-              if (filter.id === "scheduled") return "bg-purple-500 text-white border-purple-500";
-              if (filter.id === "posted") return "bg-emerald-500 text-white border-emerald-500";
-              return "bg-foreground text-background border-foreground";
-            };
-            return (
-              <button
-                key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-                className={`px-4 py-2 rounded-full text-sm border transition-colors ${getFilterStyle()}`}
-              >
-                {filter.label}
-              </button>
-            );
-          })}
+        <div className="flex items-center gap-4">
+          <span className="text-muted-foreground">Show me:</span>
+          <div className="flex gap-2">
+            {filters.map((filter) => {
+              const getFilterStyle = () => {
+                if (activeFilter !== filter.id) return "bg-background hover:bg-muted border-border";
+                if (filter.id === "scheduled") return "bg-purple-500 text-white border-purple-500";
+                if (filter.id === "posted") return "bg-emerald-500 text-white border-emerald-500";
+                return "bg-foreground text-background border-foreground";
+              };
+              return (
+                <button
+                  key={filter.id}
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={`px-6 py-2.5 rounded-xl text-sm border transition-colors ${getFilterStyle()}`}
+                >
+                  {filter.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

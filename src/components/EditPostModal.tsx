@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { X, Instagram, Facebook, Upload, Sparkles, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Calendar, Clock, Play } from "lucide-react";
-import greenGemModel from "@/assets/green-gem-model.png";
-import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
   id: string;
@@ -89,23 +87,27 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Selected Media:</p>
               <div className="grid grid-cols-3 gap-2">
-                {/* Video thumbnail */}
+                {/* Primary media from post */}
                 <div className="aspect-square rounded-lg overflow-hidden relative">
-                  <video src={ringVideo} className="w-full h-full object-cover" muted />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
-                      <Play className="w-4 h-4 text-white fill-white" />
-                    </div>
+                  {post.mediaType === "video" ? (
+                    <>
+                      <video src={post.media} className="w-full h-full object-cover" muted />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                        <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
+                          <Play className="w-4 h-4 text-white fill-white" />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <img src={post.media} alt="" className="w-full h-full object-cover" />
+                  )}
+                </div>
+                {/* Show second item if carousel */}
+                {post.hasCarousel && (
+                  <div className="aspect-square rounded-lg overflow-hidden">
+                    <img src={post.media} alt="" className="w-full h-full object-cover opacity-70" />
                   </div>
-                </div>
-                {/* Image */}
-                <div className="aspect-square rounded-lg overflow-hidden">
-                  <img 
-                    src={greenGemModel} 
-                    alt="" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                )}
               </div>
               <button className="w-full py-3 border rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 <Upload className="w-4 h-4" />

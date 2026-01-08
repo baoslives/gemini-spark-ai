@@ -52,7 +52,7 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
       <div className="bg-background rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <p className="font-mono text-sm tracking-widest text-muted-foreground">CREATE SOCIAL POST</p>
+          <p className="font-mono text-sm tracking-widest text-muted-foreground">Scheduled when:</p>
           <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
             <X className="w-5 h-5" />
           </button>
@@ -180,7 +180,7 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
             {/* Action Buttons */}
             <div className="space-y-2">
               <button className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
-                Publish
+                Publish Now
               </button>
               <button 
                 onClick={() => setView("schedule")}

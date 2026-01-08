@@ -35,7 +35,7 @@ const posts: Post[] = [
   {
     id: "2",
     platforms: [{ name: "RedNote" }],
-    media: goldNecklace,
+    media: diamondEarrings,
     mediaType: "image",
     hasCarousel: true,
     status: "scheduled",
@@ -128,7 +128,7 @@ const posts: Post[] = [
   {
     id: "11",
     platforms: [{ name: "Instagram" }, { name: "Facebook" }],
-    media: greenGemRing,
+    media: goldNecklace,
     mediaType: "image",
     status: "posted",
     title: "Emerald Ring Launch",

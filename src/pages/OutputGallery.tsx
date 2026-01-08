@@ -259,6 +259,7 @@ export const OutputGallery = () => {
             post={post}
             engagement={postedEngagement[post.id]}
             onViewAnalytics={() => openAnalytics(post)}
+            onClick={() => openAnalytics(post)}
           />
         ))}
       </div>
@@ -276,10 +277,12 @@ const PostCard = ({
   post,
   engagement,
   onViewAnalytics,
+  onClick,
 }: {
   post: Post;
   engagement?: { likedBy: string; likes: string };
   onViewAnalytics: () => void;
+  onClick: () => void;
 }) => {
   const getStatusBadge = () => {
     switch (post.status) {
@@ -311,7 +314,7 @@ const PostCard = ({
   };
 
   return (
-    <div className="bg-card rounded-xl overflow-hidden border">
+    <div onClick={onClick} className="bg-card rounded-xl overflow-hidden border cursor-pointer hover:shadow-lg transition-shadow">
       {/* Media */}
       <div className="relative aspect-[4/5]">
         {post.mediaType === "video" ? (

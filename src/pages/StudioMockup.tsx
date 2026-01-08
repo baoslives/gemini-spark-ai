@@ -2,12 +2,22 @@ import { useState, useRef } from "react";
 import { ImageIcon, Check, X, Settings, Sparkles, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+
+// Demo generated images for mockup
+import greenGemRing from "@/assets/green-gem-ring.png";
+import emeraldRingModel from "@/assets/emerald-ring-model.png";
+import pinkGemRing from "@/assets/pink-gem-ring.png";
+import gemOnRock from "@/assets/gem-on-rock.png";
 
 export const StudioMockup = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
   const [prompt, setPrompt] = useState("");
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
+  const [isGenerating, setIsGenerating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const referenceInputRef = useRef<HTMLInputElement>(null);
 
@@ -74,7 +84,29 @@ export const StudioMockup = () => {
     setPrompt("A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit garden. Warm, natural golden hour lighting. The skin texture is realistic with natural pores and soft shadows. Professional bokeh effect, 4k, lifestyle photography");
   };
 
+  const handleGenerate = () => {
+    setIsGenerating(true);
+    // Simulate generation with demo images
+    setTimeout(() => {
+      setGeneratedImages([greenGemRing, emeraldRingModel, pinkGemRing, gemOnRock]);
+      setIsGenerating(false);
+    }, 1500);
+  };
+
+  const toggleImageSelection = (index: number) => {
+    setSelectedImages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
   const hasImages = uploadedImages.length > 0;
+  const hasGeneratedImages = generatedImages.length > 0;
 
   return (
     <div className="min-h-screen bg-background p-8">
@@ -238,12 +270,76 @@ export const StudioMockup = () => {
                     <FileText className="w-4 h-4" />
                     Sample Prompt
                   </Button>
-                  <Button size="sm" className="ml-auto gap-2 bg-foreground text-background hover:bg-foreground/90">
+                  <Button 
+                    size="sm" 
+                    className="ml-auto gap-2 bg-foreground text-background hover:bg-foreground/90"
+                    onClick={handleGenerate}
+                    disabled={isGenerating}
+                  >
                     <Sparkles className="w-4 h-4" />
-                    Generate
+                    {isGenerating ? "Generating..." : "Generate"}
                   </Button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Part 3: Generated Output - Only show after generation */}
+        {hasGeneratedImages && (
+          <div className="bg-card rounded-xl border border-border p-6 mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-mono text-sm tracking-widest text-foreground">
+                3. GENERATED OUTPUT
+              </h2>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center ${selectedImages.size > 0 ? 'bg-primary' : 'bg-muted'}`}>
+                <Check className={`w-4 h-4 ${selectedImages.size > 0 ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground mb-4">
+              Select the images you want to use for your post
+            </p>
+
+            {/* Generated Images Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              {generatedImages.map((img, index) => (
+                <div 
+                  key={index} 
+                  className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedImages.has(index) 
+                      ? 'border-primary ring-2 ring-primary/20' 
+                      : 'border-border hover:border-muted-foreground/50'
+                  }`}
+                  onClick={() => toggleImageSelection(index)}
+                >
+                  <img 
+                    src={img} 
+                    alt={`Generated ${index + 1}`}
+                    className="w-full aspect-[4/5] object-cover"
+                  />
+                  <div className="absolute top-2 left-2">
+                    <Checkbox 
+                      checked={selectedImages.has(index)}
+                      onCheckedChange={() => toggleImageSelection(index)}
+                      className="bg-background/80 backdrop-blur-sm"
+                    />
+                  </div>
+                  {selectedImages.has(index) && (
+                    <div className="absolute inset-0 bg-primary/10 pointer-events-none" />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Action Button */}
+            <div className="flex justify-end">
+              <Button 
+                disabled={selectedImages.size === 0}
+                className="gap-2"
+              >
+                Create Post from Selection ({selectedImages.size})
+              </Button>
             </div>
           </div>
         )}

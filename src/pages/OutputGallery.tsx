@@ -11,6 +11,7 @@ import purpleGemEarring from "@/assets/purple-gem-earring.png";
 import rubyNecklace from "@/assets/ruby-necklace.png";
 import jadeNecklace from "@/assets/jade-necklace.png";
 import emeraldEarringsBox from "@/assets/emerald-earrings-box.png";
+import emeraldRingModel from "@/assets/emerald-ring-model.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
@@ -41,11 +42,11 @@ const posts: Post[] = [
   {
     id: "2",
     platforms: [{ name: "RedNote" }],
-    media: greenGemRing,
+    media: emeraldRingModel,
     mediaType: "image",
     hasCarousel: true,
     status: "scheduled",
-    scheduledDate: "Wed, Jan 7",
+    scheduledDate: "Thu, Jan 8",
     scheduledTime: "8:30 PM",
     title: "绿宝石戒指 美图",
     caption: "「优雅，永恒，自信。」全新绿色...",

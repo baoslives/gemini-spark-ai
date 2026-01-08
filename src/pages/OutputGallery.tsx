@@ -154,7 +154,7 @@ const getPlatformDisplay = (platform: string) => {
     case "Facebook":
       return { icon: <Facebook className="w-4 h-4" />, name: "Facebook", color: "" };
     case "RedNote":
-      return { icon: <span className="text-xs font-bold text-red-500">小红书</span>, name: "RedNote", color: "text-red-500" };
+      return { icon: <span className="px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded">小红书</span>, name: "RedNote", color: "text-red-500" };
     case "LinkedIn":
       return { icon: <span className="text-xs font-bold text-blue-600">in</span>, name: "LinkedIn", color: "" };
     case "TikTok":

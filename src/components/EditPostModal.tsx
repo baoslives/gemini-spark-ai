@@ -194,7 +194,7 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
                 onClick={() => setView("schedule")}
                 className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors"
               >
-                <Calendar className="w-4 h-4" />
+                <CalendarIcon className="w-4 h-4" />
                 {post.scheduledDate || "Wed, Jan 7"} • {post.scheduledTime || "7:15 PM"}
               </button>
               <button className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
@@ -292,7 +292,7 @@ const ScheduleView = ({ post, onClose, onBack }: { post: Post; onClose: () => vo
                   </span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="w-auto p-0 z-[60]" align="start">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
@@ -314,7 +314,7 @@ const ScheduleView = ({ post, onClose, onBack }: { post: Post; onClose: () => vo
                   <span className="text-sm">{selectedTime}</span>
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-48 p-0" align="start">
+              <PopoverContent className="w-48 p-0 z-[60]" align="start">
                 <div className="max-h-60 overflow-y-auto p-2">
                   {timeOptions.map((time) => (
                     <button

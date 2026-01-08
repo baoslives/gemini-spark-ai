@@ -1,39 +1,72 @@
 import { useState } from "react";
-import { Download, Trash2, Search, Crop, MoreHorizontal, ArrowUpRight, ChevronDown } from "lucide-react";
+import { Search, MoreHorizontal, ChevronDown } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import goldNecklace from "@/assets/gold-necklace.png";
 import diamondEarrings from "@/assets/diamond-earrings.png";
 import silverBracelet from "@/assets/silver-bracelet.png";
 import gemOnRock from "@/assets/gem-on-rock.png";
 
-interface AssetItem {
+interface UploadItem {
   id: string;
   src: string;
-  type: "image" | "video";
+  lastUpdate: string;
 }
 
-interface AssetCollection {
+interface DownloadCollection {
+  id: string;
+  name: string;
+  icon: string;
+  assets: string[];
+  history: { date: string; action: string; link?: string }[];
+}
+
+interface RecentCollection {
   id: string;
   name: string;
   description: string;
   icon: string;
   lastUpdate: string;
-  assets: AssetItem[];
+  assets: string[];
 }
 
-const collections: AssetCollection[] = [
+const uploadItems: UploadItem[] = [
+  { id: "1", src: goldNecklace, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "2", src: gemOnRock, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "3", src: silverBracelet, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "4", src: greenGemRing, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+];
+
+const downloadCollections: DownloadCollection[] = [
+  {
+    id: "1",
+    name: "EMERALD PENDANT NECKLACE",
+    icon: "💎",
+    assets: [greenGemRing, gemOnRock, goldNecklace, diamondEarrings],
+    history: [
+      { date: "Oct 12, 13:58", action: "File downloaded to device." },
+      { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
+    ],
+  },
+  {
+    id: "2",
+    name: "GREEN GEM RING COLLECTION",
+    icon: "💍",
+    assets: [greenGemRing, gemOnRock, silverBracelet, diamondEarrings, goldNecklace],
+    history: [
+      { date: "Oct 12, 13:58", action: "File downloaded to device." },
+      { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
+    ],
+  },
+];
+
+const recentCollections: RecentCollection[] = [
   {
     id: "1",
     name: "EMERALD PENDANT NECKLACE",
     description: "A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit...",
     icon: "💎",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [
-      { id: "1a", src: greenGemRing, type: "image" },
-      { id: "1b", src: gemOnRock, type: "image" },
-      { id: "1c", src: diamondEarrings, type: "image" },
-      { id: "1d", src: silverBracelet, type: "image" },
-    ],
+    assets: [greenGemRing, gemOnRock, diamondEarrings, silverBracelet],
   },
   {
     id: "2",
@@ -41,12 +74,7 @@ const collections: AssetCollection[] = [
     description: "A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit...",
     icon: "💍",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [
-      { id: "2a", src: greenGemRing, type: "image" },
-      { id: "2b", src: gemOnRock, type: "image" },
-      { id: "2c", src: diamondEarrings, type: "image" },
-      { id: "2d", src: goldNecklace, type: "image" },
-    ],
+    assets: [greenGemRing, gemOnRock, diamondEarrings, goldNecklace],
   },
 ];
 
@@ -55,7 +83,7 @@ type FilterType = "recent" | "uploads" | "downloads";
 export const Assets = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("recent");
   const [searchQuery, setSearchQuery] = useState("");
-  const [hoveredAsset, setHoveredAsset] = useState<string | null>(null);
+  const [hoveredUpload, setHoveredUpload] = useState<string | null>(null);
 
   const filters: { id: FilterType; label: string }[] = [
     { id: "recent", label: "Recent Creations" },
@@ -115,95 +143,141 @@ export const Assets = () => {
         </div>
       </div>
 
-      {/* Asset Collections */}
-      <div className="space-y-8">
-        {collections.map((collection) => (
-          <div key={collection.id} className="space-y-3">
-            {/* Collection Header */}
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-lg">
-                  {collection.icon}
-                </div>
-                <div>
-                  <h3 className="font-mono text-sm tracking-widest">{collection.name}</h3>
-                  <p className="text-sm text-muted-foreground max-w-xl truncate">
-                    {collection.description}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <button className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-full text-sm hover:bg-foreground/90 transition-colors">
-                  <ArrowUpRight className="w-4 h-4" />
-                  Open in Studio
+      {/* Content based on active filter */}
+      {activeFilter === "uploads" && (
+        <div className="grid grid-cols-4 gap-4">
+          {uploadItems.map((item) => (
+            <div
+              key={item.id}
+              className="relative"
+              onMouseEnter={() => setHoveredUpload(item.id)}
+              onMouseLeave={() => setHoveredUpload(null)}
+            >
+              <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-card border">
+                <img
+                  src={item.src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+                <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:bg-gray-100 transition-colors">
+                  <MoreHorizontal className="w-4 h-4" />
                 </button>
+              </div>
+              
+              {/* Hover state with button */}
+              {hoveredUpload === item.id && (
+                <div className="mt-2 space-y-2">
+                  <p className="text-xs text-muted-foreground">{item.lastUpdate}</p>
+                  <button className="w-full py-2.5 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors flex items-center justify-center gap-1">
+                    + Create with Studio
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activeFilter === "downloads" && (
+        <div className="space-y-8">
+          {downloadCollections.map((collection) => (
+            <div key={collection.id} className="space-y-3">
+              {/* Collection Header */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-lg">
+                    {collection.icon}
+                  </div>
+                  <h3 className="font-mono text-sm tracking-widest">{collection.name}</h3>
+                </div>
                 <button className="p-2 hover:bg-muted rounded-full transition-colors">
                   <MoreHorizontal className="w-5 h-5" />
                 </button>
               </div>
-            </div>
 
-            {/* Assets Grid */}
-            <div className="grid grid-cols-4 gap-3">
-              {collection.assets.map((asset, index) => (
-                <div
-                  key={asset.id}
-                  className="relative aspect-[4/5] rounded-xl overflow-hidden group cursor-pointer"
-                  onMouseEnter={() => setHoveredAsset(asset.id)}
-                  onMouseLeave={() => setHoveredAsset(null)}
-                >
-                  <img
-                    src={asset.src}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                  
-                  {/* Hover overlay - only show on first item or hovered */}
-                  {(hoveredAsset === asset.id || (index === 0 && hoveredAsset === null)) && index === 0 && (
-                    <div className="absolute inset-0 bg-black/30 flex flex-col">
-                      {/* Top action buttons */}
-                      <div className="flex justify-between p-2">
-                        <div className="flex flex-col gap-1">
-                          <button className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
-                            <Download className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
-                            <Crop className="w-4 h-4" />
-                          </button>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <button className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                          <button className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      {/* Spacer */}
-                      <div className="flex-1" />
-                      
-                      {/* Bottom action buttons */}
-                      <div className="p-2 space-y-1">
-                        <button className="w-full py-2 bg-white/20 text-white text-sm rounded-lg hover:bg-white/30 transition-colors flex items-center justify-center gap-1">
-                          + Create post
-                        </button>
-                        <button className="w-full py-2 bg-white/20 text-white text-sm rounded-lg hover:bg-white/30 transition-colors flex items-center justify-center gap-1">
-                          ⊙ Select
-                        </button>
-                      </div>
-                    </div>
-                  )}
+              {/* Assets Row */}
+              <div className="flex gap-3">
+                {collection.assets.map((src, index) => (
+                  <div
+                    key={index}
+                    className="w-32 h-40 rounded-xl overflow-hidden flex-shrink-0"
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* History Log */}
+              <div className="text-sm text-muted-foreground space-y-0.5">
+                {collection.history.map((entry, idx) => (
+                  <p key={idx}>
+                    {entry.date} – {entry.action}
+                    {entry.link && (
+                      <a href="#" className="text-primary hover:underline ml-1">
+                        {entry.link}
+                      </a>
+                    )}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {activeFilter === "recent" && (
+        <div className="space-y-8">
+          {recentCollections.map((collection) => (
+            <div key={collection.id} className="space-y-3">
+              {/* Collection Header */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-lg">
+                    {collection.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-mono text-sm tracking-widest">{collection.name}</h3>
+                    <p className="text-sm text-muted-foreground max-w-xl truncate">
+                      {collection.description}
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="flex items-center gap-2">
+                  <button className="flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-full text-sm hover:bg-foreground/90 transition-colors">
+                    ↗ Open in Studio
+                  </button>
+                  <button className="p-2 hover:bg-muted rounded-full transition-colors">
+                    <MoreHorizontal className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
 
-            {/* Timestamp */}
-            <p className="text-xs text-muted-foreground">{collection.lastUpdate}</p>
-          </div>
-        ))}
-      </div>
+              {/* Assets Grid */}
+              <div className="grid grid-cols-4 gap-3">
+                {collection.assets.map((src, index) => (
+                  <div
+                    key={index}
+                    className="relative aspect-[4/5] rounded-xl overflow-hidden group cursor-pointer"
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {/* Timestamp */}
+              <p className="text-xs text-muted-foreground">{collection.lastUpdate}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

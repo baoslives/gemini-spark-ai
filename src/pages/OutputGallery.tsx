@@ -317,22 +317,11 @@ const PostCard = ({
       <div className="p-3 space-y-2">
         {/* Platform icons */}
         <div className="flex items-center gap-2">
-          {post.platforms.length === 1 ? (
-            // Single platform - show icon + name
-            <div className="flex items-center gap-1">
-              {getPlatformDisplay(post.platforms[0].name).icon}
-              <span className={`text-sm ${getPlatformDisplay(post.platforms[0].name).color}`}>
-                {getPlatformDisplay(post.platforms[0].name).name}
-              </span>
+          {post.platforms.map((platform, idx) => (
+            <div key={idx} className="flex items-center">
+              {getPlatformDisplay(platform.name).icon}
             </div>
-          ) : (
-            // Multiple platforms - just show icons
-            post.platforms.map((platform, idx) => (
-              <div key={idx} className="flex items-center justify-center w-6 h-6 rounded-full bg-muted">
-                {getPlatformDisplay(platform.name).icon}
-              </div>
-            ))
-          )}
+          ))}
         </div>
 
         {/* Title */}

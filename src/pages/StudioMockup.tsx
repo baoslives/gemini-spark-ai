@@ -1,11 +1,15 @@
 import { useState, useRef } from "react";
-import { ImageIcon, Check, X } from "lucide-react";
+import { ImageIcon, Check, X, Settings, Sparkles, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export const StudioMockup = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [referenceImage, setReferenceImage] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const referenceInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -50,6 +54,26 @@ export const StudioMockup = () => {
     setUploadedImages(prev => prev.filter((_, i) => i !== index));
   };
 
+  const handleReferenceSelect = () => {
+    referenceInputRef.current?.click();
+  };
+
+  const handleReferenceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setReferenceImage(ev.target.result as string);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleSamplePrompt = () => {
+    setPrompt("A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit garden. Warm, natural golden hour lighting. The skin texture is realistic with natural pores and soft shadows. Professional bokeh effect, 4k, lifestyle photography");
+  };
+
   const hasImages = uploadedImages.length > 0;
 
   return (
@@ -66,7 +90,7 @@ export const StudioMockup = () => {
         </div>
 
         {/* Upload Section */}
-        <div className="bg-card rounded-xl border border-border p-6">
+        <div className="bg-card rounded-xl border border-border p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-mono text-sm tracking-widest text-foreground">
               1. UPLOAD PRODUCT IMAGE
@@ -141,6 +165,88 @@ export const StudioMockup = () => {
             className="hidden"
           />
         </div>
+
+        {/* Part 2: Instructions Prompt - Only show when images are uploaded */}
+        {hasImages && (
+          <div className="bg-card rounded-xl border border-border p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-mono text-sm tracking-widest text-foreground">
+                2. INSTRUCTIONS PROMPT
+              </h2>
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center ${prompt ? 'bg-primary' : 'bg-muted'}`}>
+                <Check className={`w-4 h-4 ${prompt ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
+              </div>
+            </div>
+
+            {/* Settings Bar */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="bg-muted px-3 py-1.5 rounded-md text-sm text-muted-foreground font-mono">
+                gemini-3-pro-image-preview | 4:5 | 1080p | 2 images/gen
+              </div>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Settings className="w-4 h-4" />
+                Setting
+              </Button>
+            </div>
+
+            {/* Reference Image and Prompt */}
+            <div className="flex gap-4">
+              {/* Reference Image Picker */}
+              <div className="w-48 shrink-0">
+                <div 
+                  onClick={handleReferenceSelect}
+                  className="aspect-[4/5] bg-muted/50 rounded-lg border border-border flex items-center justify-center cursor-pointer hover:bg-muted transition-colors overflow-hidden"
+                >
+                  {referenceImage ? (
+                    <img src={referenceImage} alt="Reference" className="w-full h-full object-cover" />
+                  ) : (
+                    <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                  )}
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full mt-2"
+                  onClick={handleReferenceSelect}
+                >
+                  Choose a Reference Image
+                </Button>
+                <input
+                  ref={referenceInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleReferenceChange}
+                  className="hidden"
+                />
+              </div>
+
+              {/* Prompt Area */}
+              <div className="flex-1 flex flex-col">
+                <Textarea
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  placeholder="Describe how you want the mockup to look..."
+                  className="flex-1 min-h-[160px] resize-none bg-muted/30 border-border"
+                />
+                
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3 mt-3">
+                  <Button variant="outline" size="sm">
+                    Optimize Prompt
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2" onClick={handleSamplePrompt}>
+                    <FileText className="w-4 h-4" />
+                    Sample Prompt
+                  </Button>
+                  <Button size="sm" className="ml-auto gap-2 bg-foreground text-background hover:bg-foreground/90">
+                    <Sparkles className="w-4 h-4" />
+                    Generate
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

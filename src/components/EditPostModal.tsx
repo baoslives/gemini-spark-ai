@@ -22,9 +22,12 @@ interface EditPostModalProps {
 }
 
 const platforms = [
-  { id: "instagram", name: "INSTAGRAM", icon: <Instagram className="w-5 h-5" />, selected: true },
-  { id: "facebook", name: "FACEBOOK", icon: <Facebook className="w-5 h-5" />, selected: false },
-  { id: "twitter", name: "X (TWITTER)", icon: <span className="font-bold text-lg">𝕏</span>, selected: false },
+  { id: "instagram", name: "INSTAGRAM", icon: <Instagram className="w-5 h-5" /> },
+  { id: "facebook", name: "FACEBOOK", icon: <Facebook className="w-5 h-5" /> },
+  { id: "twitter", name: "X (TWITTER)", icon: <span className="font-bold text-lg">𝕏</span> },
+  { id: "rednote", name: "XIAOHONGSHU", icon: <span className="px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded">小红书</span> },
+  { id: "linkedin", name: "LINKEDIN", icon: <span className="text-sm font-bold text-blue-600">in</span> },
+  { id: "tiktok", name: "TIKTOK", icon: <span className="text-sm">♪</span> },
 ];
 
 export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
@@ -50,9 +53,8 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-background rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-8">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6">
-          <p className="font-mono text-sm tracking-widest text-muted-foreground">Scheduled when:</p>
+        {/* Header - just close button */}
+        <div className="flex justify-end mb-6">
           <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
             <X className="w-5 h-5" />
           </button>
@@ -186,8 +188,8 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
                 onClick={() => setView("schedule")}
                 className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors"
               >
-                <Upload className="w-4 h-4" />
-                Schedule Post
+                <Calendar className="w-4 h-4" />
+                {post.scheduledDate || "Wed, Jan 7"} • {post.scheduledTime || "7:15 PM"}
               </button>
               <button className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 <Upload className="w-4 h-4" />

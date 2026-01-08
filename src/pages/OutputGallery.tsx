@@ -5,6 +5,10 @@ import goldNecklace from "@/assets/gold-necklace.png";
 import diamondEarrings from "@/assets/diamond-earrings.png";
 import silverBracelet from "@/assets/silver-bracelet.png";
 import gemOnRock from "@/assets/gem-on-rock.png";
+import pinkGemRing from "@/assets/pink-gem-ring.png";
+import blueGemEarrings from "@/assets/blue-gem-earrings.png";
+import purpleGemEarring from "@/assets/purple-gem-earring.png";
+import rubyNecklace from "@/assets/ruby-necklace.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
@@ -85,12 +89,54 @@ const posts: Post[] = [
     title: "节日系列首发",
     caption: "新年新气象 💚 翡翠手链系列正式上...",
   },
+  {
+    id: "7",
+    platforms: [{ name: "Instagram" }],
+    media: pinkGemRing,
+    mediaType: "image",
+    status: "scheduled",
+    scheduledDate: "Thu, Jan 9",
+    scheduledTime: "3:00 PM",
+    title: "Pink Diamond...",
+    caption: "The rarest of all colors. Our pink dia...",
+  },
+  {
+    id: "8",
+    platforms: [{ name: "RedNote" }],
+    media: blueGemEarrings,
+    mediaType: "image",
+    status: "draft",
+    scheduledDate: "Fri, Jan 10",
+    scheduledTime: "11:00 AM",
+    title: "冰蓝耳环系列",
+    caption: "如冰雪般清澈的蓝宝石耳环...",
+  },
+  {
+    id: "9",
+    platforms: [{ name: "Instagram" }, { name: "Facebook" }],
+    media: purpleGemEarring,
+    mediaType: "image",
+    status: "posted",
+    title: "Amethyst Drop...",
+    caption: "Elegance in every drop. Our new am...",
+  },
+  {
+    id: "10",
+    platforms: [{ name: "TikTok" }],
+    media: rubyNecklace,
+    mediaType: "image",
+    status: "posted",
+    title: "Ruby Pendant",
+    caption: "Deep red passion. The ultimate sta...",
+  },
 ];
 
 // Engagement data for posted content
 const postedEngagement: Record<string, { likedBy: string; likes: string }> = {
   "5": { likedBy: "jewelry_lovers", likes: "52,341 others" },
   "6": { likedBy: "小红书 时尚", likes: "31,567 others" },
+  "9": { likedBy: "gemstone_fans", likes: "28,903 others" },
+  "10": { likedBy: "ruby_collector", likes: "45,672 others" },
 };
 
 type FilterType = "all" | "scheduled" | "suggested" | "draft" | "posted";
@@ -158,19 +204,23 @@ export const OutputGallery = () => {
         </div>
 
         <div className="flex gap-2">
-          {filters.map((filter) => (
-            <button
-              key={filter.id}
-              onClick={() => setActiveFilter(filter.id)}
-              className={`px-4 py-2 rounded-full text-sm border transition-colors ${
-                activeFilter === filter.id
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background hover:bg-muted"
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
+          {filters.map((filter) => {
+            const getFilterStyle = () => {
+              if (activeFilter !== filter.id) return "bg-background hover:bg-muted border-border";
+              if (filter.id === "scheduled") return "bg-purple-500 text-white border-purple-500";
+              if (filter.id === "posted") return "bg-emerald-500 text-white border-emerald-500";
+              return "bg-foreground text-background border-foreground";
+            };
+            return (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`px-4 py-2 rounded-full text-sm border transition-colors ${getFilterStyle()}`}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
-import { FileText, Trash2, Plus, Mic, Send, Settings } from "lucide-react";
+import { Plus, Mic, Send, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Message {
@@ -124,35 +124,17 @@ export const ChatContainer = () => {
               </button>
             </div>
 
-            {/* Input with pre-filled system prompt */}
+            {/* Simple input */}
             <div className="border rounded-2xl bg-card shadow-sm overflow-hidden">
               <textarea
                 ref={textareaRef}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type your message"
-                className="w-full px-4 py-3 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground resize-none min-h-[60px]"
-                rows={2}
+                placeholder="Ask anything"
+                className="w-full px-4 py-3 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground resize-none min-h-[80px]"
+                rows={3}
               />
-
-              {/* System prompt preview */}
-              <div className="px-4 pb-3">
-                <div className="p-3 bg-muted rounded-xl text-sm text-muted-foreground space-y-2">
-                  <p className="line-clamp-3">{systemPromptText}</p>
-                  
-                  {/* PDF attachment */}
-                  <div className="flex items-center gap-2 p-2 bg-background rounded-lg w-fit">
-                    <div className="w-8 h-8 bg-red-500/10 rounded flex items-center justify-center">
-                      <FileText className="w-4 h-4 text-red-500" />
-                    </div>
-                    <span className="text-sm text-foreground">Desireegem_brandguide.pdf</span>
-                    <button className="p-1 hover:bg-muted rounded transition-colors">
-                      <Trash2 className="w-3.5 h-3.5 text-muted-foreground" />
-                    </button>
-                  </div>
-                </div>
-              </div>
               
               {/* Bottom toolbar */}
               <div className="flex items-center justify-between px-3 py-2 border-t">
@@ -174,8 +156,9 @@ export const ChatContainer = () => {
                 <Button 
                   size="icon" 
                   className="rounded-full w-9 h-9"
+                  disabled={!inputValue.trim()}
                   onClick={() => {
-                    handleSend(inputValue || "Start conversation");
+                    handleSend(inputValue);
                     setInputValue("");
                   }}
                 >

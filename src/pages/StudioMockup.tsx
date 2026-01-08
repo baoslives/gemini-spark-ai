@@ -1,10 +1,12 @@
 import { useState, useRef } from "react";
-import { ImageIcon, Check, X, Settings, Sparkles, FileText } from "lucide-react";
+import { ImageIcon, Check, X, Settings, Sparkles, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CreatePostModal } from "@/components/CreatePostModal";
 import { SamplePromptModal } from "@/components/SamplePromptModal";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 // Demo generated images for mockup
 import greenGemRing from "@/assets/green-gem-ring.png";
@@ -20,6 +22,7 @@ export const StudioMockup = () => {
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const [showSamplePromptModal, setShowSamplePromptModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -90,6 +93,37 @@ export const StudioMockup = () => {
 
   const handleSelectSamplePrompt = (selectedPrompt: string) => {
     setPrompt(selectedPrompt);
+  };
+
+  const handleOptimizePrompt = async () => {
+    if (!prompt.trim()) {
+      toast.error("Please enter a prompt first");
+      return;
+    }
+
+    setIsOptimizing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("optimize-prompt", {
+        body: {
+          prompt,
+          hasReferenceImage: !!referenceImage,
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.optimizedPrompt) {
+        setPrompt(data.optimizedPrompt);
+        toast.success("Prompt optimized!");
+      }
+    } catch (error) {
+      console.error("Error optimizing prompt:", error);
+      toast.error("Failed to optimize prompt. Please try again.");
+    } finally {
+      setIsOptimizing(false);
+    }
   };
 
   const handleGenerate = () => {
@@ -271,8 +305,15 @@ export const StudioMockup = () => {
                 
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3 mt-3">
-                  <Button variant="outline" size="sm">
-                    Optimize Prompt
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleOptimizePrompt}
+                    disabled={isOptimizing || !prompt.trim()}
+                    className="gap-2"
+                  >
+                    {isOptimizing && <Loader2 className="w-4 h-4 animate-spin" />}
+                    {isOptimizing ? "Optimizing..." : "Optimize Prompt"}
                   </Button>
                   <Button variant="outline" size="sm" className="gap-2" onClick={handleSamplePrompt}>
                     <FileText className="w-4 h-4" />

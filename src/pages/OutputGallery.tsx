@@ -9,6 +9,8 @@ import pinkGemRing from "@/assets/pink-gem-ring.png";
 import blueGemEarrings from "@/assets/blue-gem-earrings.png";
 import purpleGemEarring from "@/assets/purple-gem-earring.png";
 import rubyNecklace from "@/assets/ruby-necklace.png";
+import jadeNecklace from "@/assets/jade-necklace.png";
+import emeraldEarringsBox from "@/assets/emerald-earrings-box.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
@@ -128,6 +130,28 @@ const posts: Post[] = [
     status: "posted",
     title: "Ruby Pendant",
     caption: "Deep red passion. The ultimate sta...",
+  },
+  {
+    id: "11",
+    platforms: [{ name: "Instagram" }, { name: "RedNote" }],
+    media: jadeNecklace,
+    mediaType: "image",
+    status: "scheduled",
+    scheduledDate: "Fri, Jan 10",
+    scheduledTime: "2:00 PM",
+    title: "Jade Beads Co...",
+    caption: "Timeless elegance meets modern de...",
+  },
+  {
+    id: "12",
+    platforms: [{ name: "RedNote" }],
+    media: emeraldEarringsBox,
+    mediaType: "image",
+    status: "scheduled",
+    scheduledDate: "Sat, Jan 11",
+    scheduledTime: "6:00 PM",
+    title: "祖母绿耳环礼盒",
+    caption: "奢华礼盒装，送礼首选 💎...",
   },
 ];
 

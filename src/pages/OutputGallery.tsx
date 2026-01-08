@@ -51,7 +51,7 @@ const posts: Post[] = [
   {
     id: "3",
     platforms: [{ name: "Instagram" }],
-    media: gemOnRock,
+    media: greenGemRing,
     mediaType: "image",
     hasCarousel: true,
     status: "suggested",
@@ -83,7 +83,7 @@ const posts: Post[] = [
   {
     id: "6",
     platforms: [{ name: "RedNote" }, { name: "TikTok" }],
-    media: greenGemRing,
+    media: gemOnRock,
     mediaType: "image",
     status: "posted",
     title: "节日系列首发",

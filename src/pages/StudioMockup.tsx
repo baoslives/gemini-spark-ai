@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CreatePostModal } from "@/components/CreatePostModal";
+import { SamplePromptModal } from "@/components/SamplePromptModal";
 
 // Demo generated images for mockup
 import greenGemRing from "@/assets/green-gem-ring.png";
@@ -20,6 +21,7 @@ export const StudioMockup = () => {
   const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
   const [isGenerating, setIsGenerating] = useState(false);
   const [showCreatePostModal, setShowCreatePostModal] = useState(false);
+  const [showSamplePromptModal, setShowSamplePromptModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const referenceInputRef = useRef<HTMLInputElement>(null);
 
@@ -83,7 +85,11 @@ export const StudioMockup = () => {
   };
 
   const handleSamplePrompt = () => {
-    setPrompt("A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit garden. Warm, natural golden hour lighting. The skin texture is realistic with natural pores and soft shadows. Professional bokeh effect, 4k, lifestyle photography");
+    setShowSamplePromptModal(true);
+  };
+
+  const handleSelectSamplePrompt = (selectedPrompt: string) => {
+    setPrompt(selectedPrompt);
   };
 
   const handleGenerate = () => {
@@ -353,6 +359,14 @@ export const StudioMockup = () => {
         <CreatePostModal
           media={Array.from(selectedImages).map(i => generatedImages[i])}
           onClose={() => setShowCreatePostModal(false)}
+        />
+      )}
+
+      {/* Sample Prompt Modal */}
+      {showSamplePromptModal && (
+        <SamplePromptModal
+          onClose={() => setShowSamplePromptModal(false)}
+          onSelect={handleSelectSamplePrompt}
         />
       )}
     </div>

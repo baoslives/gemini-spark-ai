@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { X, Instagram, Facebook, Upload, Sparkles, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Calendar, Clock } from "lucide-react";
+import { X, Instagram, Facebook, Upload, Sparkles, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, Calendar, Clock, Play } from "lucide-react";
+import greenGemModel from "@/assets/green-gem-model.png";
+import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
   id: string;
@@ -85,15 +87,23 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Selected Media:</p>
               <div className="grid grid-cols-3 gap-2">
-                {[1, 2, 3, 4, 5].map((_, idx) => (
-                  <div key={idx} className="aspect-square rounded-lg overflow-hidden">
-                    <img 
-                      src={post.media} 
-                      alt="" 
-                      className="w-full h-full object-cover"
-                    />
+                {/* Video thumbnail */}
+                <div className="aspect-square rounded-lg overflow-hidden relative">
+                  <video src={ringVideo} className="w-full h-full object-cover" muted />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                    <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
+                      <Play className="w-4 h-4 text-white fill-white" />
+                    </div>
                   </div>
-                ))}
+                </div>
+                {/* Image */}
+                <div className="aspect-square rounded-lg overflow-hidden">
+                  <img 
+                    src={greenGemModel} 
+                    alt="" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
               <button className="w-full py-3 border rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 <Upload className="w-4 h-4" />
@@ -145,11 +155,10 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
                 ) : (
                   <img src={post.media} alt="" className="w-full h-full object-cover" />
                 )}
-                {/* Carousel dots */}
+                {/* Carousel dots - only 2 items */}
                 <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-                  {[1, 2, 3, 4, 5].map((_, idx) => (
-                    <div key={idx} className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`} />
-                  ))}
+                  <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-white/50" />
                 </div>
               </div>
 
@@ -162,12 +171,6 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
                   </div>
                   <Bookmark className="w-6 h-6" />
                 </div>
-                <p className="text-sm">
-                  <span className="flex items-center gap-1">
-                    <span className="text-orange-500">🧡</span>
-                    Liked by <strong>craig_love</strong> and <strong>44,686 others</strong>
-                  </span>
-                </p>
                 <p className="text-sm">
                   <strong>Desiree Gems</strong> {aiCaption}
                 </p>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Instagram, Facebook, Play, Calendar, Clock, Heart, X, MoreHorizontal, MessageCircle, Send, Bookmark, BarChart3, ArrowUpRight } from "lucide-react";
+import { EditPostModal } from "@/components/EditPostModal";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import goldNecklace from "@/assets/gold-necklace.png";
 import diamondEarrings from "@/assets/diamond-earrings.png";
@@ -187,6 +188,7 @@ export const OutputGallery = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("all");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [showAnalytics, setShowAnalytics] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const filters: { id: FilterType; label: string }[] = [
     { id: "all", label: "All" },
@@ -208,14 +210,19 @@ export const OutputGallery = () => {
     return order[a.status] - order[b.status];
   });
 
-  const openAnalytics = (post: Post) => {
+  const handlePostClick = (post: Post) => {
     setSelectedPost(post);
-    setShowAnalytics(true);
+    if (post.status === "posted") {
+      setShowAnalytics(true);
+    } else {
+      setShowEditModal(true);
+    }
   };
 
-  const closeAnalytics = () => {
+  const closeModals = () => {
     setSelectedPost(null);
     setShowAnalytics(false);
+    setShowEditModal(false);
   };
 
   return (
@@ -258,15 +265,20 @@ export const OutputGallery = () => {
             key={post.id}
             post={post}
             engagement={postedEngagement[post.id]}
-            onViewAnalytics={() => openAnalytics(post)}
-            onClick={() => openAnalytics(post)}
+            onViewAnalytics={() => handlePostClick(post)}
+            onClick={() => handlePostClick(post)}
           />
         ))}
       </div>
 
-      {/* Analytics Modal */}
+      {/* Analytics Modal - for posted content */}
       {showAnalytics && selectedPost && (
-        <AnalyticsModal post={selectedPost} onClose={closeAnalytics} />
+        <AnalyticsModal post={selectedPost} onClose={closeModals} />
+      )}
+
+      {/* Edit Modal - for scheduled/suggested/draft content */}
+      {showEditModal && selectedPost && (
+        <EditPostModal post={selectedPost} onClose={closeModals} />
       )}
     </div>
   );

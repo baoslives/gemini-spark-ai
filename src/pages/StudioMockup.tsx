@@ -3,6 +3,7 @@ import { ImageIcon, Check, X, Settings, Sparkles, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CreatePostModal } from "@/components/CreatePostModal";
 
 // Demo generated images for mockup
 import greenGemRing from "@/assets/green-gem-ring.png";
@@ -18,6 +19,7 @@ export const StudioMockup = () => {
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<Set<number>>(new Set());
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const referenceInputRef = useRef<HTMLInputElement>(null);
 
@@ -337,6 +339,7 @@ export const StudioMockup = () => {
               <Button 
                 disabled={selectedImages.size === 0}
                 className="gap-2"
+                onClick={() => setShowCreatePostModal(true)}
               >
                 Create Post from Selection ({selectedImages.size})
               </Button>
@@ -344,6 +347,14 @@ export const StudioMockup = () => {
           </div>
         )}
       </div>
+
+      {/* Create Post Modal */}
+      {showCreatePostModal && (
+        <CreatePostModal
+          media={Array.from(selectedImages).map(i => generatedImages[i])}
+          onClose={() => setShowCreatePostModal(false)}
+        />
+      )}
     </div>
   );
 };

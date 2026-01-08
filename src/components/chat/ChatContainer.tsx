@@ -3,7 +3,7 @@ import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 import { Plus, Mic, Send, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
 interface Message {
   id: string;
   role: "user" | "ai" | "system";
@@ -96,22 +96,17 @@ export const ChatContainer = () => {
     }
   };
 
-  // Welcome/Empty state
+  // Welcome/Empty state with Analytics Dashboard
   if (!hasStarted) {
     return (
       <div className="flex flex-col h-screen">
-        {/* Hero section */}
-        <div className="flex-1 flex flex-col items-center justify-center px-8 pb-32">
-          <h1 className="text-4xl md:text-5xl font-light text-foreground mb-3">
-            How can I help you today?
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Your instant assistant for drafting, analyzing, and solving complex tasks in seconds.
-          </p>
+        {/* Analytics Dashboard */}
+        <div className="flex-1 overflow-y-auto p-6 pb-48 scrollbar-thin">
+          <AnalyticsDashboard />
         </div>
 
         {/* Input area at bottom */}
-        <div className="fixed bottom-0 left-44 right-0 p-6">
+        <div className="fixed bottom-0 left-44 right-0 p-6 bg-gradient-to-t from-background via-background to-transparent">
           <div className="max-w-3xl mx-auto space-y-3">
             {/* Model selector and settings */}
             <div className="flex items-center gap-2">

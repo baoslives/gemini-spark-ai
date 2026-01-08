@@ -1,459 +1,663 @@
-import { useState, useRef } from "react";
-import { Calendar, Clock, Instagram, MoreHorizontal, Heart, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Instagram, Facebook, ChevronDown, Settings, Calendar, Clock, Heart, MessageCircle, Send, Bookmark, MoreHorizontal, X, Sparkles, Upload, BarChart3, ArrowUpRight } from "lucide-react";
 import greenGemRing from "@/assets/green-gem-ring.png";
 import goldNecklace from "@/assets/gold-necklace.png";
 import diamondEarrings from "@/assets/diamond-earrings.png";
 import silverBracelet from "@/assets/silver-bracelet.png";
-import ringVideoLaunch from "@/assets/ring-video-launch.mp4";
 import gemOnRock from "@/assets/gem-on-rock.png";
-import { PostDetailModal } from "@/components/PostDetailModal";
 
-interface CarouselItem {
-  type: "image" | "video";
-  src: string;
-}
-
-interface ScheduledPost {
+interface Post {
   id: string;
-  title: string;
-  caption: string;
+  platform: "Instagram" | "Facebook" | "Twitter";
   image: string;
-  platform: "Instagram" | "RedNote" | "LinkedIn" | "TikTok";
-  scheduledDate: string;
-  scheduledTime: string;
-  status: "scheduled" | "suggested" | "draft" | "posted";
+  carouselImages?: string[];
+  status: "scheduled" | "published" | "draft";
+  scheduledDate?: string;
+  publishedDate?: string;
+  caption: string;
+  hashtags: string;
   likes?: number;
   likedBy?: string;
-  mediaType?: "image" | "video" | "carousel";
-  video?: string;
-  carouselImages?: string[];
-  carouselItems?: CarouselItem[];
 }
 
-const scheduledPosts: ScheduledPost[] = [
-  // Scheduled Content (only Instagram and RedNote)
+const posts: Post[] = [
   {
     id: "1",
-    title: "Green Gem Ring Launch",
-    caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!\n\n#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
-    image: greenGemRing,
     platform: "Instagram",
-    scheduledDate: "2026-01-07",
-    scheduledTime: "19:15",
+    image: greenGemRing,
+    carouselImages: [greenGemRing, gemOnRock, diamondEarrings, silverBracelet, goldNecklace],
     status: "scheduled",
-    mediaType: "video",
-    video: ringVideoLaunch,
+    scheduledDate: "Tuesday, 30 July 2025at 7:15PM",
+    caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!",
+    hashtags: "#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
   },
   {
     id: "2",
-    title: "绿宝石戒指 美图",
-    caption: "「优雅，永恒，自信。」全新绿色宝石戒指，专为日常闪耀而生。\n\n#绿宝石戒指 #轻奢风格 #自信穿搭 #日常珠宝",
+    platform: "Instagram",
     image: greenGemRing,
-    platform: "RedNote",
-    scheduledDate: "2026-01-07",
-    scheduledTime: "20:30",
-    status: "scheduled",
-    mediaType: "carousel",
-    carouselItems: [
-      { type: "image", src: greenGemRing },
-      { type: "video", src: ringVideoLaunch },
-    ],
+    carouselImages: [greenGemRing, gemOnRock, diamondEarrings, silverBracelet, goldNecklace],
+    status: "published",
+    publishedDate: "Tuesday, 30 July 2025at 7:15PM",
+    caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!",
+    hashtags: "#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
+    likes: 4686,
+    likedBy: "craig_love",
   },
   {
     id: "3",
-    title: "Behind the Ring Story",
-    caption: "Every piece tells a story. Discover the craftsmanship behind our signature green gem ring.\n\n#BehindTheScenes #JewelryCraftsmanship #Handmade",
-    image: gemOnRock,
-    platform: "Instagram",
-    scheduledDate: "2026-01-08",
-    scheduledTime: "12:00",
-    status: "suggested",
-    mediaType: "carousel",
-    carouselImages: [gemOnRock, greenGemRing],
+    platform: "Facebook",
+    image: greenGemRing,
+    carouselImages: [greenGemRing, gemOnRock, diamondEarrings, silverBracelet, goldNecklace],
+    status: "draft",
+    caption: "What do you think of the design? Drop a '🔥' in the comments if you'd wear this!",
+    hashtags: "#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle",
   },
-  // Draft Content
   {
     id: "4",
-    title: "User Generated Content",
-    caption: "You wear it, we feature it! Tag us to be featured in our next spotlight.\n\n#UGC #CustomerLove #JewelryCommunity",
+    platform: "Facebook",
     image: diamondEarrings,
-    platform: "Instagram",
-    scheduledDate: "2026-01-10",
-    scheduledTime: "18:00",
-    status: "draft",
-  },
-  {
-    id: "5",
-    title: "Valentine's Preview",
-    caption: "Love is in the details 💕 Sneak peek at our Valentine's collection.\n\n#ValentinesDay #GiftForHer #LuxuryJewelry",
-    image: silverBracelet,
-    platform: "Instagram",
-    scheduledDate: "2026-01-15",
-    scheduledTime: "10:00",
-    status: "draft",
-  },
-  {
-    id: "6",
-    title: "情人节系列预告",
-    caption: "爱在细节中 💕 情人节系列抢先看！\n\n#情人节礼物 #轻奢珠宝 #送礼首选",
-    image: goldNecklace,
-    platform: "RedNote",
-    scheduledDate: "2026-01-15",
-    scheduledTime: "20:00",
-    status: "draft",
-  },
-  // Past Posted Content (no green gem ring)
-  {
-    id: "7",
-    title: "Holiday Collection Launch",
-    caption: "Introducing our stunning Holiday Collection ✨ Perfect gifts for your loved ones.\n\n#HolidayJewelry #GiftIdeas #LuxuryGifts",
-    image: goldNecklace,
-    platform: "Instagram",
-    scheduledDate: "2025-12-20",
-    scheduledTime: "18:00",
-    status: "posted",
-    likes: 52341,
+    status: "published",
+    publishedDate: "Monday, 29 July 2025at 2:00PM",
+    caption: "Elegance in every detail ✨",
+    hashtags: "#DiamondEarrings #LuxuryJewelry",
+    likes: 2341,
     likedBy: "jewelry_lovers",
   },
-  {
-    id: "8",
-    title: "Diamond Studs Feature",
-    caption: "Timeless elegance in every sparkle. Our diamond studs are the perfect everyday luxury.\n\n#DiamondEarrings #TimelessJewelry #EverydayLuxury",
-    image: diamondEarrings,
-    platform: "LinkedIn",
-    scheduledDate: "2025-12-22",
-    scheduledTime: "09:00",
-    status: "posted",
-    likes: 8923,
-    likedBy: "professional_style",
-  },
-  {
-    id: "9",
-    title: "节日系列首发",
-    caption: "新年新气象 💚 翡翠手链系列正式上线！\n\n#翡翠手链 #新年礼物 #轻奢珠宝",
-    image: silverBracelet,
-    platform: "RedNote",
-    scheduledDate: "2025-12-28",
-    scheduledTime: "20:00",
-    status: "posted",
-    likes: 31567,
-    likedBy: "小红书时尚",
-  },
-  {
-    id: "10",
-    title: "New Year Unboxing",
-    caption: "POV: You just received the perfect New Year's gift 💎✨ #JewelryTok #Unboxing #LuxuryLifestyle",
-    image: goldNecklace,
-    platform: "TikTok",
-    scheduledDate: "2025-12-31",
-    scheduledTime: "12:00",
-    status: "posted",
-    likes: 128453,
-    likedBy: "tiktok_viral",
-  },
-  {
-    id: "11",
-    title: "Elegant Everyday Moments",
-    caption: "Shine bright in every moment ✨ Our diamond collection for the modern woman.\n\n#DiamondJewelry #ModernElegance #LuxuryStyle",
-    image: diamondEarrings,
-    platform: "Instagram",
-    scheduledDate: "2026-01-02",
-    scheduledTime: "19:00",
-    status: "posted",
-    likes: 38291,
-    likedBy: "style_maven",
-  },
-  {
-    id: "12",
-    title: "翡翠手链日常搭配",
-    caption: "日常穿搭也要精致 💚 翡翠手链让你每天都闪耀！\n\n#日常珠宝 #翡翠手链 #精致生活",
-    image: silverBracelet,
-    platform: "RedNote",
-    scheduledDate: "2026-01-03",
-    scheduledTime: "20:00",
-    status: "posted",
-    likes: 25674,
-    likedBy: "珠宝达人",
-  },
 ];
+
+type FilterType = "all" | "scheduled" | "draft" | "published";
+type ModalType = "analytics" | "edit" | "schedule" | null;
 
 const getPlatformIcon = (platform: string) => {
   switch (platform) {
     case "Instagram":
       return <Instagram className="w-4 h-4" />;
-    case "RedNote":
-      return <span className="text-xs font-bold text-red-500">小红书</span>;
-    case "LinkedIn":
-      return <span className="text-xs font-bold text-blue-600">in</span>;
-    case "TikTok":
-      return <span className="text-xs font-bold">♪</span>;
+    case "Facebook":
+      return <Facebook className="w-4 h-4" />;
     default:
       return null;
   }
-};
-
-const getStatusBadge = (status: string) => {
-  switch (status) {
-    case "scheduled":
-      return <span className="text-xs px-2 py-1 rounded-full bg-emerald-light text-emerald">Scheduled</span>;
-    case "suggested":
-      return <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-600">Suggested</span>;
-    case "draft":
-      return <span className="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">Draft</span>;
-    case "posted":
-      return <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-600">Posted</span>;
-    default:
-      return null;
-  }
-};
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-};
-
-const formatTime = (time: string) => {
-  const [hours, minutes] = time.split(":");
-  const h = parseInt(hours);
-  const ampm = h >= 12 ? "PM" : "AM";
-  const hour12 = h % 12 || 12;
-  return `${hour12}:${minutes} ${ampm}`;
 };
 
 export const OutputGallery = () => {
-  const [selectedPost, setSelectedPost] = useState<ScheduledPost | null>(null);
-  const [activeFilter, setActiveFilter] = useState<"all" | "scheduled" | "suggested" | "draft" | "posted">("all");
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [modalType, setModalType] = useState<ModalType>(null);
 
-  // Sort posts: scheduled first, then suggested, then drafts, then posted
-  const sortedAndFilteredPosts = scheduledPosts
-    .filter((post) => {
-      if (activeFilter === "all") return true;
-      if (activeFilter === "scheduled") return post.status === "scheduled";
-      if (activeFilter === "suggested") return post.status === "suggested";
-      if (activeFilter === "draft") return post.status === "draft";
-      if (activeFilter === "posted") return post.status === "posted";
-      return true;
-    })
-    .sort((a, b) => {
-      const statusOrder = { scheduled: 0, suggested: 1, draft: 2, posted: 3 };
-      return statusOrder[a.status] - statusOrder[b.status];
-    });
+  const filters: { id: FilterType; label: string }[] = [
+    { id: "all", label: "All" },
+    { id: "scheduled", label: "Scheduled" },
+    { id: "draft", label: "Draft" },
+    { id: "published", label: "Published" },
+  ];
 
-  const handlePostClick = (post: ScheduledPost) => {
+  const filteredPosts = posts.filter((post) => {
+    if (activeFilter === "all") return true;
+    return post.status === activeFilter;
+  });
+
+  const openModal = (post: Post, type: ModalType) => {
     setSelectedPost(post);
+    setModalType(type);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setSelectedPost(null);
-  };
-
-  const handleUpdatePost = (updatedPost: ScheduledPost) => {
-    console.log("Updating post:", updatedPost);
-    // Future: Update the post in state/backend
-    setSelectedPost(null);
+    setModalType(null);
   };
 
   return (
     <div className="p-8">
       {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-light mb-2">Social Post</h1>
+        <p className="text-muted-foreground">
+          Organize your generations, uploads, and history.
+        </p>
+      </div>
+
+      {/* Filters */}
       <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold mb-2">Output Gallery</h1>
-          <p className="text-muted-foreground">Manage your scheduled and draft posts</p>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">Show me:</span>
+          <div className="flex gap-2">
+            {filters.map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id)}
+                className={`px-4 py-2 rounded-full text-sm transition-colors ${
+                  activeFilter === filter.id
+                    ? "bg-foreground text-background"
+                    : "bg-card border hover:bg-muted"
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-2">
-          <button 
-            onClick={() => setActiveFilter("all")}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              activeFilter === "all" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-card border hover:bg-muted"
-            }`}
-          >
-            All Posts
-          </button>
-          <button 
-            onClick={() => setActiveFilter("scheduled")}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              activeFilter === "scheduled" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-card border hover:bg-muted"
-            }`}
-          >
-            Scheduled
-          </button>
-          <button 
-            onClick={() => setActiveFilter("suggested")}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              activeFilter === "suggested" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-card border hover:bg-muted"
-            }`}
-          >
-            Suggested
-          </button>
-          <button 
-            onClick={() => setActiveFilter("draft")}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              activeFilter === "draft" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-card border hover:bg-muted"
-            }`}
-          >
-            Drafts
-          </button>
-          <button 
-            onClick={() => setActiveFilter("posted")}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              activeFilter === "posted" 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-card border hover:bg-muted"
-            }`}
-          >
-            Posted
+
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Sortby</span>
+          <button className="flex items-center gap-1 px-3 py-2 border rounded-full text-sm hover:bg-muted transition-colors">
+            Recent
+            <ChevronDown className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Posts Grid */}
-      <div className="grid grid-cols-5 gap-3">
-        {sortedAndFilteredPosts.map((post) => (
-          <div
+      <div className="grid grid-cols-3 gap-6">
+        {filteredPosts.map((post) => (
+          <PostCard
             key={post.id}
-            onClick={() => handlePostClick(post)}
-            className="bg-card rounded-xl border overflow-hidden hover:border-foreground/20 transition-all cursor-pointer group"
-          >
-            {/* Media */}
-            <div className="aspect-square relative">
-              {post.mediaType === "video" && post.video ? (
-                <div className="relative w-full h-full">
-                  <video
-                    src={post.video}
-                    className="w-full h-full object-cover"
-                    muted
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                    <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                      <Play className="w-5 h-5 text-foreground ml-0.5" />
-                    </div>
-                  </div>
-                </div>
-              ) : post.mediaType === "carousel" && post.carouselItems ? (
-                <div className="relative w-full h-full">
-                  {post.carouselItems[0].type === "image" ? (
-                    <img
-                      src={post.carouselItems[0].src}
-                      alt={post.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <>
-                      <video
-                        src={post.carouselItems[0].src}
-                        className="w-full h-full object-cover"
-                        muted
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                        <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
-                          <Play className="w-5 h-5 text-foreground ml-0.5" />
-                        </div>
-                      </div>
-                    </>
-                  )}
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-                    {post.carouselItems.map((_, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`} 
-                      />
-                    ))}
-                  </div>
-                  <div className="absolute top-3 right-12 bg-black/50 backdrop-blur-sm rounded px-1.5 py-0.5">
-                    <span className="text-white text-[10px] font-medium">1/{post.carouselItems.length}</span>
-                  </div>
-                </div>
-              ) : post.mediaType === "carousel" && post.carouselImages ? (
-                <div className="relative w-full h-full">
-                  <img
-                    src={post.carouselImages[0]}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
-                    {post.carouselImages.map((_, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`} 
-                      />
-                    ))}
-                  </div>
-                  <div className="absolute top-3 right-12 bg-black/50 backdrop-blur-sm rounded px-1.5 py-0.5">
-                    <span className="text-white text-[10px] font-medium">1/{post.carouselImages.length}</span>
-                  </div>
-                </div>
-              ) : (
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover"
-                />
-              )}
-              <div className="absolute top-3 left-3">
-                {getStatusBadge(post.status)}
-              </div>
-              <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button className="p-1.5 bg-background/80 backdrop-blur-sm rounded-lg">
-                  <MoreHorizontal className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="flex items-center gap-1.5 text-muted-foreground">
-                  {getPlatformIcon(post.platform)}
-                  <span className="text-xs">{post.platform}</span>
-                </div>
-              </div>
-              <p className="font-medium text-sm mb-2 line-clamp-1">{post.title}</p>
-              <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{post.caption}</p>
-              {post.status === "posted" && post.likes && post.likedBy ? (
-                <div className="flex items-center gap-1.5 text-xs">
-                  <Heart className="w-3 h-3 fill-red-500 text-red-500" />
-                  <span>
-                    Liked by <span className="font-medium">{post.likedBy}</span> and{" "}
-                    <span className="font-medium">{post.likes.toLocaleString()} others</span>
-                  </span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    <span>{formatDate(post.scheduledDate)}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    <span>{formatTime(post.scheduledTime)}</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+            post={post}
+            onEditPost={() => openModal(post, "edit")}
+            onEditSchedule={() => openModal(post, "schedule")}
+            onViewAnalytics={() => openModal(post, "analytics")}
+            onContinue={() => openModal(post, "edit")}
+          />
         ))}
       </div>
 
-      {/* Post Detail Modal */}
-      {selectedPost && (
-        <PostDetailModal
-          post={selectedPost}
-          onClose={handleCloseModal}
-          onUpdate={handleUpdatePost}
-        />
+      {/* Modals */}
+      {selectedPost && modalType === "analytics" && (
+        <AnalyticsModal post={selectedPost} onClose={closeModal} />
       )}
+      {selectedPost && modalType === "edit" && (
+        <EditPostModal post={selectedPost} onClose={closeModal} />
+      )}
+      {selectedPost && modalType === "schedule" && (
+        <ScheduleModal post={selectedPost} onClose={closeModal} />
+      )}
+    </div>
+  );
+};
+
+// Post Card Component
+const PostCard = ({
+  post,
+  onEditPost,
+  onEditSchedule,
+  onViewAnalytics,
+  onContinue,
+}: {
+  post: Post;
+  onEditPost: () => void;
+  onEditSchedule: () => void;
+  onViewAnalytics: () => void;
+  onContinue: () => void;
+}) => {
+  return (
+    <div className="bg-card rounded-xl border overflow-hidden">
+      {/* Image with platform badge */}
+      <div className="relative aspect-[4/5]">
+        <img src={post.image} alt="" className="w-full h-full object-cover" />
+        
+        {/* Platform badge */}
+        <div className="absolute top-3 left-3">
+          <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full text-sm font-medium">
+            {getPlatformIcon(post.platform)}
+            {post.platform}
+          </span>
+        </div>
+
+        {/* Carousel dots */}
+        {post.carouselImages && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+            {post.carouselImages.map((_, idx) => (
+              <div
+                key={idx}
+                className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-3">
+        {/* Status badge */}
+        {post.status === "scheduled" && (
+          <span className="inline-block px-3 py-1 bg-emerald-500 text-white text-xs rounded-full">
+            Scheduled: {post.scheduledDate}
+          </span>
+        )}
+        {post.status === "published" && (
+          <span className="inline-block px-3 py-1 bg-foreground text-background text-xs rounded-full">
+            Published: {post.publishedDate}
+          </span>
+        )}
+        {post.status === "draft" && (
+          <span className="inline-block px-3 py-1 border text-xs rounded-full">
+            Draft
+          </span>
+        )}
+
+        {/* Caption */}
+        <div>
+          <p className="text-sm">
+            <span className="font-semibold">Desiree Gems</span> {post.caption}
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">{post.hashtags}</p>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex gap-2 pt-2">
+          {post.status === "scheduled" && (
+            <>
+              <button
+                onClick={onEditPost}
+                className="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-sm hover:bg-muted transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                Edit Post
+              </button>
+              <button
+                onClick={onEditSchedule}
+                className="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-sm hover:bg-muted transition-colors"
+              >
+                <Calendar className="w-4 h-4" />
+                Edit Schedule
+              </button>
+            </>
+          )}
+          {post.status === "published" && (
+            <button
+              onClick={onViewAnalytics}
+              className="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-sm hover:bg-muted transition-colors"
+            >
+              <BarChart3 className="w-4 h-4" />
+              View Analytics
+            </button>
+          )}
+          {post.status === "draft" && (
+            <button
+              onClick={onContinue}
+              className="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-sm hover:bg-muted transition-colors"
+            >
+              ↻ Continue
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Analytics Modal
+const AnalyticsModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
+  const metrics = [
+    { label: "FOLLOWERS", value: "+389" },
+    { label: "IMPRESSIONS", value: "4.9K" },
+    { label: "ENGAGEMENT RATE", value: "8.8K" },
+    { label: "PROFILE REACH", value: "1.4K" },
+  ];
+
+  const chartData = [
+    { day: "M", impressions: 60, followers: 65 },
+    { day: "T", impressions: 75, followers: 60 },
+    { day: "W", impressions: 65, followers: 55 },
+    { day: "T", impressions: 70, followers: 60 },
+    { day: "F", impressions: 55, followers: 50 },
+    { day: "S", impressions: 100, followers: 45 },
+    { day: "S", impressions: 50, followers: 55 },
+    { day: "M", impressions: 45, followers: 60 },
+    { day: "T", impressions: 55, followers: 65 },
+  ];
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-background rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-8">
+        <div className="flex justify-between items-start mb-6">
+          <p className="font-mono text-sm tracking-widest text-muted-foreground">PUBLISHED POST PERFORMANCE</p>
+          <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* Left: Analytics */}
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-3xl font-light mb-1">Performance Summary</h2>
+              <p className="text-muted-foreground">Analyze social post performance.</p>
+            </div>
+
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {metrics.map((metric) => (
+                <div key={metric.label} className="space-y-1">
+                  <p className="font-mono text-xs tracking-widest text-muted-foreground">{metric.label}</p>
+                  <p className="text-4xl font-light">{metric.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Chart */}
+            <div className="space-y-3">
+              <div>
+                <h3 className="text-xl font-light">Growth Overview</h3>
+                <p className="text-sm text-muted-foreground">Trends of follower and impressions overtime.</p>
+              </div>
+              <div className="h-48 flex items-end gap-1">
+                {chartData.map((d, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                    <div className="w-full flex items-end justify-center h-32 gap-0.5">
+                      <div
+                        className="w-4 bg-blue-400 rounded-t"
+                        style={{ height: `${d.impressions}%` }}
+                      />
+                    </div>
+                    <span className="text-xs text-muted-foreground">{d.day}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-center gap-6 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded bg-blue-400" />
+                  <span>Impressions</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-0.5 bg-orange-400" />
+                  <span>Followers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Post Preview */}
+          <div className="space-y-4">
+            <span className="inline-block px-3 py-1 bg-foreground text-background text-xs rounded-full">
+              Published: {post.publishedDate}
+            </span>
+
+            {/* Instagram-style preview */}
+            <div className="border rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 p-3 border-b">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                  DG
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">Desiree Gems</p>
+                  <p className="text-xs text-muted-foreground">Singapore, Singapore</p>
+                </div>
+                <MoreHorizontal className="w-5 h-5" />
+              </div>
+              
+              <div className="relative aspect-square">
+                <img src={post.image} alt="" className="w-full h-full object-cover" />
+                {post.carouselImages && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+                    {post.carouselImages.map((_, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Heart className="w-6 h-6" />
+                    <MessageCircle className="w-6 h-6" />
+                    <Send className="w-6 h-6" />
+                  </div>
+                  <Bookmark className="w-6 h-6" />
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
+                  <span>Liked by <strong>{post.likedBy}</strong> and <strong>{post.likes?.toLocaleString()} others</strong></span>
+                </div>
+                <p className="text-sm">
+                  <strong>Desiree Gems</strong> {post.caption}
+                </p>
+                <p className="text-sm text-muted-foreground">{post.hashtags}</p>
+              </div>
+            </div>
+
+            <button className="w-full py-3 border rounded-xl text-sm hover:bg-muted transition-colors flex items-center justify-center gap-2">
+              <ArrowUpRight className="w-4 h-4" />
+              Go to Post
+            </button>
+            <button className="w-full py-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Delete Post
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Edit Post Modal
+const EditPostModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
+  const [selectedPlatform, setSelectedPlatform] = useState(post.platform);
+  const platforms = [
+    { id: "Instagram", icon: Instagram, selected: true },
+    { id: "Facebook", icon: Facebook, selected: false },
+    { id: "Twitter", label: "X (TWITTER)", selected: false },
+  ];
+
+  const selectedImages = [greenGemRing, gemOnRock, diamondEarrings, silverBracelet, goldNecklace];
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-background rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-auto p-8">
+        <div className="flex justify-between items-start mb-6">
+          <p className="font-mono text-sm tracking-widest">CREATE SOCIAL POST</p>
+          <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-8">
+          {/* Left: Edit options */}
+          <div className="space-y-6">
+            {/* Platform selection */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">Share to:</p>
+              <div className="space-y-2">
+                {platforms.map((platform) => (
+                  <button
+                    key={platform.id}
+                    onClick={() => setSelectedPlatform(platform.id as any)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border transition-colors ${
+                      selectedPlatform === platform.id ? "bg-foreground text-background" : "hover:bg-muted"
+                    }`}
+                  >
+                    {platform.icon ? <platform.icon className="w-5 h-5" /> : <span className="font-bold">𝕏</span>}
+                    <span className="font-mono text-sm tracking-wider">{platform.label || platform.id.toUpperCase()}</span>
+                    {selectedPlatform === platform.id && <span className="ml-auto">✓</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Selected Media */}
+            <div className="space-y-2">
+              <p className="text-sm">Selected Media:</p>
+              <div className="grid grid-cols-3 gap-2">
+                {selectedImages.map((src, idx) => (
+                  <div key={idx} className="aspect-square rounded-lg overflow-hidden">
+                    <img src={src} alt="" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <button className="w-full py-3 border rounded-xl text-sm hover:bg-muted transition-colors flex items-center justify-center gap-2">
+                <Upload className="w-4 h-4" />
+                Add Media
+              </button>
+            </div>
+
+            {/* Caption */}
+            <div className="space-y-2">
+              <p className="text-sm">Instructions prompt for caption:</p>
+              <textarea
+                className="w-full p-3 border rounded-xl text-sm resize-none bg-muted/50"
+                rows={3}
+                defaultValue={`help me write a caption with the taglines\n${post.hashtags}`}
+              />
+              <button className="flex items-center gap-2 px-4 py-2.5 bg-foreground text-background rounded-xl text-sm">
+                <Sparkles className="w-4 h-4" />
+                Generate Caption
+              </button>
+            </div>
+
+            {/* AI Suggestion */}
+            <div className="space-y-2">
+              <p className="text-sm text-muted-foreground">AI Caption Suggest:</p>
+              <div className="p-4 bg-muted/50 rounded-xl text-sm space-y-2">
+                <p>{post.caption}</p>
+                <p className="text-muted-foreground">{post.hashtags}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Post Preview */}
+          <div className="space-y-4">
+            <p className="font-mono text-sm tracking-widest text-center text-muted-foreground">POST PREVIEW:</p>
+
+            {/* Instagram-style preview */}
+            <div className="border rounded-xl overflow-hidden">
+              <div className="flex items-center gap-3 p-3 border-b">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                  DG
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-semibold">Desiree Gems</p>
+                  <p className="text-xs text-muted-foreground">Singapore, Singapore</p>
+                </div>
+                <MoreHorizontal className="w-5 h-5" />
+              </div>
+              
+              <div className="relative aspect-square">
+                <img src={post.image} alt="" className="w-full h-full object-cover" />
+                {post.carouselImages && (
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1">
+                    {post.carouselImages.map((_, idx) => (
+                      <div
+                        key={idx}
+                        className={`w-1.5 h-1.5 rounded-full ${idx === 0 ? "bg-white" : "bg-white/50"}`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Heart className="w-6 h-6" />
+                    <MessageCircle className="w-6 h-6" />
+                    <Send className="w-6 h-6" />
+                  </div>
+                  <Bookmark className="w-6 h-6" />
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-pink-500" />
+                  <span>Liked by <strong>craig_love</strong> and <strong>44,686 others</strong></span>
+                </div>
+                <p className="text-sm">
+                  <strong>Desiree Gems</strong> {post.caption}
+                </p>
+                <p className="text-sm text-muted-foreground">{post.hashtags}</p>
+              </div>
+            </div>
+
+            <button className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
+              Publish
+            </button>
+            <button className="w-full py-3 border rounded-xl text-sm hover:bg-muted transition-colors flex items-center justify-center gap-2">
+              <Calendar className="w-4 h-4" />
+              Schedule Post
+            </button>
+            <button className="w-full py-3 border rounded-xl text-sm hover:bg-muted transition-colors flex items-center justify-center gap-2">
+              <Upload className="w-4 h-4" />
+              Save as Draft
+            </button>
+            <button className="w-full py-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Schedule Modal
+const ScheduleModal = ({ post, onClose }: { post: Post; onClose: () => void }) => {
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-background rounded-2xl max-w-lg w-full p-8">
+        <div className="flex justify-between items-start mb-6">
+          <p className="font-mono text-sm tracking-widest">CREATE SOCIAL POST <span className="text-muted-foreground">{">"} SCHEDULE POST</span></p>
+          <button onClick={onClose} className="p-1 hover:bg-muted rounded-full">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="space-y-6">
+          {/* Platform */}
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">Schedule posting times for:</p>
+            <div className="flex items-center gap-2">
+              <Instagram className="w-5 h-5" />
+              <span className="font-mono text-sm tracking-wider">INSTAGRAM</span>
+            </div>
+          </div>
+
+          {/* Optional prompt */}
+          <div className="space-y-2">
+            <input
+              type="text"
+              placeholder="Optional prompt"
+              className="w-full p-3 border rounded-xl text-sm bg-transparent"
+            />
+            <button className="flex items-center gap-2 px-4 py-2.5 border rounded-xl text-sm hover:bg-muted transition-colors">
+              <Sparkles className="w-4 h-4" />
+              Get AI Recommendation
+            </button>
+          </div>
+
+          {/* AI Recommendation */}
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">AI Recommendation:</p>
+            <div className="p-4 bg-muted/50 rounded-xl text-sm space-y-2">
+              <p>Based on your audience (working professionals), the best times are:</p>
+              <p>📱 Instagram:</p>
+              <p>Tuesday: 6PM–8PM</p>
+              <p>Wednesday: 12PM–1PM</p>
+              <p>Sunday: 7PM–9PM</p>
+              <p className="text-amber-600 mt-2">👉 Recommended: Tuesday at 7:15PM</p>
+            </div>
+          </div>
+
+          {/* Date and Time */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <Calendar className="w-5 h-5 text-muted-foreground" />
+              <span className="text-sm">Tuesday, 30 July 2025</span>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-xl">
+              <Clock className="w-5 h-5 text-muted-foreground" />
+              <span className="text-sm">7 : 15 PM</span>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <button className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
+            Schedule Post
+          </button>
+          <button onClick={onClose} className="w-full py-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

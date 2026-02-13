@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Search, MoreHorizontal, ChevronDown } from "lucide-react";
-import leatherHandbag from "@/assets/leather-handbag.png";
-import silkScarf from "@/assets/silk-scarf.png";
-import leatherBelt from "@/assets/leather-belt.png";
-import leatherLoafers from "@/assets/leather-loafers.png";
-import cashmereCoat from "@/assets/cashmere-coat.png";
+import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
+import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
+import cashmereKnit from "@/assets/cashmere-knit.jpg";
+import woolTrousers from "@/assets/wool-trousers.jpg";
+import camelCoat from "@/assets/camel-coat.jpg";
+import suedeBag from "@/assets/suede-bag.jpg";
 
 interface UploadItem {
   id: string;
@@ -30,18 +31,18 @@ interface RecentCollection {
 }
 
 const uploadItems: UploadItem[] = [
-  { id: "1", src: leatherHandbag, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "2", src: silkScarf, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "3", src: leatherBelt, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "4", src: leatherLoafers, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "1", src: modelWoolBlazer, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "2", src: modelSilkBlouse, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "3", src: cashmereKnit, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "4", src: woolTrousers, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
 ];
 
 const downloadCollections: DownloadCollection[] = [
   {
     id: "1",
-    name: "LEATHER TOTE CAMPAIGN",
-    icon: "👜",
-    assets: [leatherHandbag, silkScarf, cashmereCoat, leatherBelt],
+    name: "WINTER WARDROBE CAMPAIGN",
+    icon: "🧥",
+    assets: [modelWoolBlazer, cashmereKnit, camelCoat, woolTrousers],
     history: [
       { date: "Oct 12, 13:58", action: "File downloaded to device." },
       { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
@@ -49,9 +50,9 @@ const downloadCollections: DownloadCollection[] = [
   },
   {
     id: "2",
-    name: "AUTUMN ACCESSORIES EDIT",
-    icon: "🧣",
-    assets: [silkScarf, leatherBelt, leatherLoafers, cashmereCoat, leatherHandbag],
+    name: "SILK & SUEDE COLLECTION",
+    icon: "👜",
+    assets: [modelSilkBlouse, suedeBag, camelCoat, woolTrousers, cashmereKnit],
     history: [
       { date: "Oct 12, 13:58", action: "File downloaded to device." },
       { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
@@ -62,19 +63,19 @@ const downloadCollections: DownloadCollection[] = [
 const recentCollections: RecentCollection[] = [
   {
     id: "1",
-    name: "LEATHER TOTE CAMPAIGN",
-    description: "Editorial shots of the signature leather tote styled against warm autumn backdrops with natural lighting...",
-    icon: "👜",
+    name: "WINTER WARDROBE CAMPAIGN",
+    description: "Editorial shots of tailored blazers and knitwear styled with warm autumn backdrops and natural lighting...",
+    icon: "🧥",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [leatherHandbag, silkScarf, cashmereCoat, leatherBelt],
+    assets: [modelWoolBlazer, cashmereKnit, camelCoat, woolTrousers],
   },
   {
     id: "2",
-    name: "AUTUMN ACCESSORIES EDIT",
-    description: "A curated lookbook featuring silk scarves, belts, and loafers in warm earthy tones for the fall season...",
-    icon: "🧣",
+    name: "SILK & SUEDE COLLECTION",
+    description: "A curated lookbook featuring silk blouses, suede bags, and tailored pieces in warm earthy tones...",
+    icon: "👜",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [silkScarf, leatherBelt, leatherLoafers, cashmereCoat],
+    assets: [modelSilkBlouse, suedeBag, camelCoat, woolTrousers],
   },
 ];
 

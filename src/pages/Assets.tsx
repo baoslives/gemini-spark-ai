@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Search, MoreHorizontal, ChevronDown } from "lucide-react";
-import greenGemRing from "@/assets/green-gem-ring.png";
-import goldNecklace from "@/assets/gold-necklace.png";
-import diamondEarrings from "@/assets/diamond-earrings.png";
-import silverBracelet from "@/assets/silver-bracelet.png";
-import gemOnRock from "@/assets/gem-on-rock.png";
+import leatherHandbag from "@/assets/leather-handbag.png";
+import silkScarf from "@/assets/silk-scarf.png";
+import leatherBelt from "@/assets/leather-belt.png";
+import leatherLoafers from "@/assets/leather-loafers.png";
+import cashmereCoat from "@/assets/cashmere-coat.png";
 
 interface UploadItem {
   id: string;
@@ -30,18 +30,18 @@ interface RecentCollection {
 }
 
 const uploadItems: UploadItem[] = [
-  { id: "1", src: goldNecklace, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "2", src: gemOnRock, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "3", src: silverBracelet, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
-  { id: "4", src: greenGemRing, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "1", src: leatherHandbag, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "2", src: silkScarf, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "3", src: leatherBelt, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
+  { id: "4", src: leatherLoafers, lastUpdate: "Latest update 13:58, 12 Oct 2025" },
 ];
 
 const downloadCollections: DownloadCollection[] = [
   {
     id: "1",
-    name: "EMERALD PENDANT NECKLACE",
-    icon: "💎",
-    assets: [greenGemRing, gemOnRock, goldNecklace, diamondEarrings],
+    name: "LEATHER TOTE CAMPAIGN",
+    icon: "👜",
+    assets: [leatherHandbag, silkScarf, cashmereCoat, leatherBelt],
     history: [
       { date: "Oct 12, 13:58", action: "File downloaded to device." },
       { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
@@ -49,9 +49,9 @@ const downloadCollections: DownloadCollection[] = [
   },
   {
     id: "2",
-    name: "GREEN GEM RING COLLECTION",
-    icon: "💍",
-    assets: [greenGemRing, gemOnRock, silverBracelet, diamondEarrings, goldNecklace],
+    name: "AUTUMN ACCESSORIES EDIT",
+    icon: "🧣",
+    assets: [silkScarf, leatherBelt, leatherLoafers, cashmereCoat, leatherHandbag],
     history: [
       { date: "Oct 12, 13:58", action: "File downloaded to device." },
       { date: "Oct 12, 14:05", action: "Shared to Instagram:", link: "View Post" },
@@ -62,19 +62,19 @@ const downloadCollections: DownloadCollection[] = [
 const recentCollections: RecentCollection[] = [
   {
     id: "1",
-    name: "EMERALD PENDANT NECKLACE",
-    description: "A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit...",
-    icon: "💎",
+    name: "LEATHER TOTE CAMPAIGN",
+    description: "Editorial shots of the signature leather tote styled against warm autumn backdrops with natural lighting...",
+    icon: "👜",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [greenGemRing, gemOnRock, diamondEarrings, silverBracelet],
+    assets: [leatherHandbag, silkScarf, cashmereCoat, leatherBelt],
   },
   {
     id: "2",
-    name: "GREEN GEM RING COLLECTION",
-    description: "A first-person perspective of a hand wearing the ring held against a soft-focus background of a sunlit...",
-    icon: "💍",
+    name: "AUTUMN ACCESSORIES EDIT",
+    description: "A curated lookbook featuring silk scarves, belts, and loafers in warm earthy tones for the fall season...",
+    icon: "🧣",
     lastUpdate: "Latest update 13:58, 12 Oct 2025",
-    assets: [greenGemRing, gemOnRock, diamondEarrings, goldNecklace],
+    assets: [silkScarf, leatherBelt, leatherLoafers, cashmereCoat],
   },
 ];
 

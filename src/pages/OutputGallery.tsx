@@ -7,6 +7,14 @@ import leatherBelt from "@/assets/leather-belt.png";
 import leatherLoafers from "@/assets/leather-loafers.png";
 import cashmereCoat from "@/assets/cashmere-coat.png";
 import ringVideo from "@/assets/ring-video.mp4";
+import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
+import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
+import camelCoat from "@/assets/camel-coat.jpg";
+import woolTrousers from "@/assets/wool-trousers.jpg";
+import cashmereTurtleneck from "@/assets/cashmere-turtleneck.jpg";
+import leatherCrossbody from "@/assets/leather-crossbody.jpg";
+import navyOvercoat from "@/assets/navy-overcoat.jpg";
+import wrapCoatModel from "@/assets/wrap-coat-model.jpg";
 
 interface Post {
   id: string;
@@ -36,14 +44,14 @@ const posts: Post[] = [
   {
     id: "2",
     platforms: [{ name: "RedNote" }],
-    media: silkScarf,
+    media: cashmereTurtleneck,
     mediaType: "image",
     hasCarousel: true,
     status: "scheduled",
     scheduledDate: "Thu, Jan 8",
     scheduledTime: "8:30 PM",
-    title: "丝巾系列 秋冬新品",
-    caption: "「优雅，永恒，自信。」全新丝巾系...",
+    title: "羊绒高领系列",
+    caption: "「优雅，永恒，自信。」全新羊绒系...",
   },
   {
     id: "3",
@@ -60,31 +68,31 @@ const posts: Post[] = [
   {
     id: "4",
     platforms: [{ name: "Instagram" }],
-    media: leatherLoafers,
+    media: navyOvercoat,
     mediaType: "image",
     status: "draft",
     scheduledDate: "Sat, Jan 10",
     scheduledTime: "6:00 PM",
-    title: "Loafer Editorial...",
-    caption: "Step into effortless elegance. Tag u...",
+    title: "Navy Overcoat...",
+    caption: "Tailored precision meets timeless st...",
   },
   {
     id: "5",
     platforms: [{ name: "Instagram" }, { name: "Facebook" }],
-    media: cashmereCoat,
+    media: wrapCoatModel,
     mediaType: "image",
     status: "posted",
-    title: "Winter Collection",
-    caption: "Introducing our stunning cashmere...",
+    title: "Camel Wrap Coat",
+    caption: "Parisian elegance in every detail...",
   },
   {
     id: "6",
     platforms: [{ name: "RedNote" }, { name: "TikTok" }],
-    media: leatherHandbag,
+    media: modelSilkBlouse,
     mediaType: "image",
     status: "posted",
-    title: "手提包系列首发",
-    caption: "经典款手提包 🧡 奢华皮革系列正式...",
+    title: "丝绸衬衫系列",
+    caption: "经典丝绸衬衫 🤍 优雅系列正式...",
   },
   {
     id: "7",
@@ -100,27 +108,27 @@ const posts: Post[] = [
   {
     id: "8",
     platforms: [{ name: "RedNote" }],
-    media: leatherBelt,
+    media: leatherCrossbody,
     mediaType: "image",
     status: "draft",
     scheduledDate: "Fri, Jan 10",
     scheduledTime: "11:00 AM",
-    title: "皮带搭配指南",
+    title: "斜挎包搭配指南",
     caption: "精致细节，尽显品味...",
   },
   {
     id: "9",
     platforms: [{ name: "Instagram" }, { name: "Facebook" }],
-    media: leatherLoafers,
+    media: modelWoolBlazer,
     mediaType: "image",
     status: "posted",
-    title: "Cognac Loafers",
-    caption: "Handcrafted perfection. Our cognac...",
+    title: "Blazer Editorial",
+    caption: "Handcrafted tailoring. Our wool blaz...",
   },
   {
     id: "10",
     platforms: [{ name: "TikTok" }],
-    media: cashmereCoat,
+    media: camelCoat,
     mediaType: "image",
     status: "posted",
     title: "Camel Coat GRWM",
@@ -129,24 +137,24 @@ const posts: Post[] = [
   {
     id: "11",
     platforms: [{ name: "Instagram" }, { name: "RedNote" }],
-    media: leatherHandbag,
+    media: woolTrousers,
     mediaType: "image",
     status: "scheduled",
     scheduledDate: "Fri, Jan 10",
     scheduledTime: "2:00 PM",
-    title: "Tote Bag Styli...",
+    title: "Wool Trousers...",
     caption: "Timeless elegance meets modern cr...",
   },
   {
     id: "12",
     platforms: [{ name: "RedNote" }],
-    media: silkScarf,
+    media: leatherLoafers,
     mediaType: "image",
     status: "scheduled",
     scheduledDate: "Sat, Jan 11",
     scheduledTime: "6:00 PM",
-    title: "丝巾礼盒装",
-    caption: "奢华礼盒装，送礼首选 🧣...",
+    title: "经典乐福鞋",
+    caption: "手工制作，品质之选 👞...",
   },
 ];
 

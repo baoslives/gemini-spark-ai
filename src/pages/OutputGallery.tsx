@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { Instagram, Facebook, Play, Calendar, Clock, Heart, X, MoreHorizontal, MessageCircle, Send, Bookmark, BarChart3, ArrowUpRight } from "lucide-react";
 import { EditPostModal } from "@/components/EditPostModal";
-import greenGemRing from "@/assets/green-gem-ring.png";
-import goldNecklace from "@/assets/gold-necklace.png";
-import diamondEarrings from "@/assets/diamond-earrings.png";
-import silverBracelet from "@/assets/silver-bracelet.png";
-import gemOnRock from "@/assets/gem-on-rock.png";
-import pinkGemRing from "@/assets/pink-gem-ring.png";
-import blueGemEarrings from "@/assets/blue-gem-earrings.png";
-import purpleGemEarring from "@/assets/purple-gem-earring.png";
-import rubyNecklace from "@/assets/ruby-necklace.png";
-import jadeNecklace from "@/assets/jade-necklace.png";
-import emeraldEarringsBox from "@/assets/emerald-earrings-box.png";
-import emeraldRingModel from "@/assets/emerald-ring-model.png";
+import leatherHandbag from "@/assets/leather-handbag.png";
+import silkScarf from "@/assets/silk-scarf.png";
+import leatherBelt from "@/assets/leather-belt.png";
+import leatherLoafers from "@/assets/leather-loafers.png";
+import cashmereCoat from "@/assets/cashmere-coat.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface Post {
@@ -37,132 +30,132 @@ const posts: Post[] = [
     status: "scheduled",
     scheduledDate: "Wed, Jan 7",
     scheduledTime: "7:15 PM",
-    title: "Green Gem Ri...",
-    caption: "What do you think of the design? Dr...",
+    title: "Leather Tote La...",
+    caption: "Introducing our signature tote in bu...",
   },
   {
     id: "2",
     platforms: [{ name: "RedNote" }],
-    media: emeraldRingModel,
+    media: silkScarf,
     mediaType: "image",
     hasCarousel: true,
     status: "scheduled",
     scheduledDate: "Thu, Jan 8",
     scheduledTime: "8:30 PM",
-    title: "绿宝石戒指 美图",
-    caption: "「优雅，永恒，自信。」全新绿色...",
+    title: "丝巾系列 秋冬新品",
+    caption: "「优雅，永恒，自信。」全新丝巾系...",
   },
   {
     id: "3",
     platforms: [{ name: "Instagram" }],
-    media: gemOnRock,
+    media: leatherBelt,
     mediaType: "image",
     hasCarousel: true,
     status: "suggested",
     scheduledDate: "Thu, Jan 8",
     scheduledTime: "12:00 PM",
-    title: "Behind the Rin...",
-    caption: "Every piece tells a story. Discover th...",
+    title: "Behind the Cra...",
+    caption: "Every stitch tells a story. Discover th...",
   },
   {
     id: "4",
     platforms: [{ name: "Instagram" }],
-    media: goldNecklace,
+    media: leatherLoafers,
     mediaType: "image",
     status: "draft",
     scheduledDate: "Sat, Jan 10",
     scheduledTime: "6:00 PM",
-    title: "User Generate...",
-    caption: "You wear it, we feature it! Tag us t...",
+    title: "Loafer Editorial...",
+    caption: "Step into effortless elegance. Tag u...",
   },
   {
     id: "5",
     platforms: [{ name: "Instagram" }, { name: "Facebook" }],
-    media: diamondEarrings,
+    media: cashmereCoat,
     mediaType: "image",
     status: "posted",
-    title: "Holiday Collection",
-    caption: "Introducing our stunning Holiday...",
+    title: "Winter Collection",
+    caption: "Introducing our stunning cashmere...",
   },
   {
     id: "6",
     platforms: [{ name: "RedNote" }, { name: "TikTok" }],
-    media: silverBracelet,
+    media: leatherHandbag,
     mediaType: "image",
     status: "posted",
-    title: "节日系列首发",
-    caption: "新年新气象 💚 翡翠手链系列正式上...",
+    title: "手提包系列首发",
+    caption: "经典款手提包 🧡 奢华皮革系列正式...",
   },
   {
     id: "7",
     platforms: [{ name: "Instagram" }],
-    media: pinkGemRing,
+    media: silkScarf,
     mediaType: "image",
     status: "scheduled",
     scheduledDate: "Thu, Jan 9",
     scheduledTime: "3:00 PM",
-    title: "Pink Diamond...",
-    caption: "The rarest of all colors. Our pink dia...",
+    title: "Silk Print Edit...",
+    caption: "The art of draping. Our silk collectio...",
   },
   {
     id: "8",
     platforms: [{ name: "RedNote" }],
-    media: blueGemEarrings,
+    media: leatherBelt,
     mediaType: "image",
     status: "draft",
     scheduledDate: "Fri, Jan 10",
     scheduledTime: "11:00 AM",
-    title: "冰蓝耳环系列",
-    caption: "如冰雪般清澈的蓝宝石耳环...",
+    title: "皮带搭配指南",
+    caption: "精致细节，尽显品味...",
   },
   {
     id: "9",
     platforms: [{ name: "Instagram" }, { name: "Facebook" }],
-    media: purpleGemEarring,
+    media: leatherLoafers,
     mediaType: "image",
     status: "posted",
-    title: "Amethyst Drop...",
-    caption: "Elegance in every drop. Our new am...",
+    title: "Cognac Loafers",
+    caption: "Handcrafted perfection. Our cognac...",
   },
   {
     id: "10",
     platforms: [{ name: "TikTok" }],
-    media: rubyNecklace,
+    media: cashmereCoat,
     mediaType: "image",
     status: "posted",
-    title: "Ruby Pendant",
-    caption: "Deep red passion. The ultimate sta...",
+    title: "Camel Coat GRWM",
+    caption: "The ultimate outerwear staple. Get r...",
   },
   {
     id: "11",
     platforms: [{ name: "Instagram" }, { name: "RedNote" }],
-    media: jadeNecklace,
+    media: leatherHandbag,
     mediaType: "image",
     status: "scheduled",
     scheduledDate: "Fri, Jan 10",
     scheduledTime: "2:00 PM",
-    title: "Jade Beads Co...",
-    caption: "Timeless elegance meets modern de...",
+    title: "Tote Bag Styli...",
+    caption: "Timeless elegance meets modern cr...",
   },
   {
     id: "12",
     platforms: [{ name: "RedNote" }],
-    media: emeraldEarringsBox,
+    media: silkScarf,
     mediaType: "image",
     status: "scheduled",
     scheduledDate: "Sat, Jan 11",
     scheduledTime: "6:00 PM",
-    title: "祖母绿耳环礼盒",
-    caption: "奢华礼盒装，送礼首选 💎...",
+    title: "丝巾礼盒装",
+    caption: "奢华礼盒装，送礼首选 🧣...",
   },
 ];
 
 // Engagement data for posted content
 const postedEngagement: Record<string, { likedBy: string; likes: string }> = {
-  "5": { likedBy: "jewelry_lovers", likes: "52,341 others" },
+  "5": { likedBy: "fashion_insiders", likes: "52,341 others" },
   "6": { likedBy: "小红书 时尚", likes: "31,567 others" },
-  "9": { likedBy: "gemstone_fans", likes: "28,903 others" },
-  "10": { likedBy: "ruby_collector", likes: "45,672 others" },
+  "9": { likedBy: "style_curator", likes: "28,903 others" },
+  "10": { likedBy: "coat_collector", likes: "45,672 others" },
 };
 
 type FilterType = "all" | "scheduled" | "draft" | "posted";
@@ -507,12 +500,12 @@ const AnalyticsModal = ({ post, onClose }: { post: Post; onClose: () => void }) 
             {/* Instagram-style preview */}
             <div className="border rounded-xl overflow-hidden">
               <div className="flex items-center gap-3 p-3 border-b">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
-                  DG
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-600 to-orange-400 flex items-center justify-center text-white text-xs font-bold">
+                  MR
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold">Desiree Gems</p>
-                  <p className="text-xs text-muted-foreground">Singapore, Singapore</p>
+                  <p className="text-sm font-semibold">Maison Rivière</p>
+                  <p className="text-xs text-muted-foreground">Paris, France</p>
                 </div>
                 <MoreHorizontal className="w-5 h-5" />
               </div>
@@ -535,7 +528,7 @@ const AnalyticsModal = ({ post, onClose }: { post: Post; onClose: () => void }) 
                   <Bookmark className="w-6 h-6" />
                 </div>
                 <p className="text-sm">
-                  <strong>Desiree Gems</strong> {post.caption}
+                  <strong>Maison Rivière</strong> {post.caption}
                 </p>
               </div>
             </div>

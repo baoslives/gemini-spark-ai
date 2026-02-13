@@ -25,8 +25,8 @@ const posts: Post[] = [
   {
     id: "1",
     platforms: [{ name: "Instagram" }, { name: "RedNote" }],
-    media: ringVideo,
-    mediaType: "video",
+    media: leatherHandbag,
+    mediaType: "image",
     status: "scheduled",
     scheduledDate: "Wed, Jan 7",
     scheduledTime: "7:15 PM",

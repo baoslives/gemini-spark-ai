@@ -15,8 +15,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['DM Sans', 'system-ui', 'sans-serif'],
-        display: ['Cormorant Garamond', 'serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        display: ['DM Sans', 'system-ui', 'sans-serif'],
+        mono: ['DM Sans', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

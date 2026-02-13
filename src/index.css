@@ -104,15 +104,15 @@
   }
 
   h1, h2, h3 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
   }
 
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'DM Sans', system-ui, sans-serif;
   }
 
   .font-display {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
   }
 }
 

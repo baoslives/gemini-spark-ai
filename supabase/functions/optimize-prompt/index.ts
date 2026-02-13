@@ -34,7 +34,7 @@ Guidelines:
 - If the user mentions a reference image, incorporate its style into the optimization
 - Always output just the optimized prompt text, nothing else
 
-${hasReferenceImage ? \`Note: The user has uploaded a reference image. \${referenceImageDescription ? \`Description: \${referenceImageDescription}\` : 'Consider incorporating similar styling, lighting, and composition from their reference.'}\` : ''}\`;
+${hasReferenceImage ? `Note: The user has uploaded a reference image. ${referenceImageDescription ? `Description: ${referenceImageDescription}` : 'Consider incorporating similar styling, lighting, and composition from their reference.'}` : ''}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

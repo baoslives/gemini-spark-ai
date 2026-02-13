@@ -1,45 +1,45 @@
 import { Sparkles, Image, Video, FileText, Clock } from "lucide-react";
-import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
+import wrapCoatModel from "@/assets/wrap-coat-model.jpg";
 import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
+import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
 import camelCoat from "@/assets/camel-coat.jpg";
-import woolTrousers from "@/assets/wool-trousers.jpg";
 
 const recentItems = [
   {
-    id: "1",
-    title: "Blazer Editorial",
+    id: "5",
+    title: "Camel Wrap Coat",
     type: "image",
-    platform: "Instagram",
+    platform: "Instagram · Facebook",
     status: "Posted",
     date: "Mon, 2:00 PM",
-    thumbnail: modelWoolBlazer,
+    thumbnail: wrapCoatModel,
   },
   {
-    id: "2",
-    title: "Silk Blouse Lookbook",
+    id: "6",
+    title: "丝绸衬衫系列",
     type: "image",
-    platform: "RedNote",
+    platform: "RedNote · TikTok",
     status: "Posted",
     date: "Sun, 6:30 PM",
     thumbnail: modelSilkBlouse,
   },
   {
-    id: "3",
-    title: "Camel Coat Campaign",
+    id: "9",
+    title: "Blazer Editorial",
+    type: "image",
+    platform: "Instagram · Facebook",
+    status: "Posted",
+    date: "Sat, 12:00 PM",
+    thumbnail: modelWoolBlazer,
+  },
+  {
+    id: "10",
+    title: "Camel Coat GRWM",
     type: "video",
     platform: "TikTok",
     status: "Posted",
-    date: "Sat, 12:00 PM",
-    thumbnail: camelCoat,
-  },
-  {
-    id: "4",
-    title: "Wool Trousers Edit",
-    type: "image",
-    platform: "Instagram",
-    status: "Posted",
     date: "Fri, 4:15 PM",
-    thumbnail: woolTrousers,
+    thumbnail: camelCoat,
   },
 ];
 

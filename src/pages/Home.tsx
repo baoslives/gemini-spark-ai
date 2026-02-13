@@ -1,45 +1,45 @@
 import { Sparkles, Image, Video, FileText, Clock } from "lucide-react";
-import diamondEarrings from "@/assets/diamond-earrings.png";
-import goldNecklace from "@/assets/gold-necklace.png";
-import silverBracelet from "@/assets/silver-bracelet.png";
-import gemOnRock from "@/assets/gem-on-rock.png";
+import leatherHandbag from "@/assets/leather-handbag.png";
+import silkScarf from "@/assets/silk-scarf.png";
+import leatherBelt from "@/assets/leather-belt.png";
+import cashmereCoat from "@/assets/cashmere-coat.png";
 
 const recentItems = [
   {
     id: "1",
-    title: "Diamond Earrings Showcase",
+    title: "Leather Tote Editorial",
     type: "image",
     platform: "Instagram",
     status: "Posted",
     date: "Mon, 2:00 PM",
-    thumbnail: diamondEarrings,
+    thumbnail: leatherHandbag,
   },
   {
     id: "2",
-    title: "Gold Necklace Collection",
+    title: "Silk Scarf Lookbook",
     type: "image",
     platform: "RedNote",
     status: "Posted",
     date: "Sun, 6:30 PM",
-    thumbnail: goldNecklace,
+    thumbnail: silkScarf,
   },
   {
     id: "3",
-    title: "Silver Bracelet Promo",
+    title: "Belt Collection Promo",
     type: "video",
     platform: "TikTok",
     status: "Posted",
     date: "Sat, 12:00 PM",
-    thumbnail: silverBracelet,
+    thumbnail: leatherBelt,
   },
   {
     id: "4",
-    title: "Gemstone Close-up",
+    title: "Cashmere Coat Campaign",
     type: "image",
     platform: "Instagram",
     status: "Posted",
     date: "Fri, 4:15 PM",
-    thumbnail: gemOnRock,
+    thumbnail: cashmereCoat,
   },
 ];
 
@@ -57,7 +57,7 @@ const getTypeIcon = (type: string) => {
 const getStatusColor = (status: string) => {
   switch (status) {
     case "Scheduled":
-      return "bg-emerald-light text-emerald";
+      return "bg-burnt-orange-light text-burnt-orange";
     case "Draft":
       return "bg-muted text-muted-foreground";
     case "Suggested":

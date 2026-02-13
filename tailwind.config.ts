@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        display: ['Cormorant Garamond', 'serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
@@ -65,13 +66,13 @@ export default {
           user: "hsl(var(--chat-user))",
           ai: "hsl(var(--chat-ai))",
         },
-        emerald: {
-          DEFAULT: "hsl(var(--emerald))",
-          light: "hsl(var(--emerald-light))",
+        "burnt-orange": {
+          DEFAULT: "hsl(var(--burnt-orange))",
+          light: "hsl(var(--burnt-orange-light))",
         },
-        gold: {
-          DEFAULT: "hsl(var(--gold))",
-          light: "hsl(var(--gold-light))",
+        camel: {
+          DEFAULT: "hsl(var(--camel))",
+          light: "hsl(var(--camel-light))",
         },
       },
       borderRadius: {

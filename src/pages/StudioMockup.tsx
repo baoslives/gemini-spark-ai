@@ -155,7 +155,7 @@ export const StudioMockup = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-semibold text-foreground mb-2">
+          <h1 className="text-2xl font-semibold text-foreground mb-2">
             Stunning Fashion Mockups for Your Collection
           </h1>
           <p className="text-muted-foreground">

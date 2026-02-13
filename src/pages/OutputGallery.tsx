@@ -222,7 +222,7 @@ export const OutputGallery = () => {
     <div className="p-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-semibold mb-1">Social Post</h1>
+        <h1 className="text-2xl font-semibold mb-1">Social Post</h1>
         <p className="text-muted-foreground mb-6">
           Organize your generations, uploads, and history.
         </p>

@@ -95,7 +95,7 @@ export const Assets = () => {
     <div className="p-8">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-light mb-2">Asset Management</h1>
+        <h1 className="text-2xl font-semibold mb-2">Asset Management</h1>
         <p className="text-muted-foreground">
           Organize your generations, uploads, and history.
         </p>

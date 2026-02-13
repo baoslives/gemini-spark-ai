@@ -1,45 +1,45 @@
 import { Sparkles, Image, Video, FileText, Clock } from "lucide-react";
-import leatherHandbag from "@/assets/leather-handbag.png";
-import silkScarf from "@/assets/silk-scarf.png";
-import leatherBelt from "@/assets/leather-belt.png";
-import cashmereCoat from "@/assets/cashmere-coat.png";
+import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
+import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
+import camelCoat from "@/assets/camel-coat.jpg";
+import woolTrousers from "@/assets/wool-trousers.jpg";
 
 const recentItems = [
   {
     id: "1",
-    title: "Leather Tote Editorial",
+    title: "Blazer Editorial",
     type: "image",
     platform: "Instagram",
     status: "Posted",
     date: "Mon, 2:00 PM",
-    thumbnail: leatherHandbag,
+    thumbnail: modelWoolBlazer,
   },
   {
     id: "2",
-    title: "Silk Scarf Lookbook",
+    title: "Silk Blouse Lookbook",
     type: "image",
     platform: "RedNote",
     status: "Posted",
     date: "Sun, 6:30 PM",
-    thumbnail: silkScarf,
+    thumbnail: modelSilkBlouse,
   },
   {
     id: "3",
-    title: "Belt Collection Promo",
+    title: "Camel Coat Campaign",
     type: "video",
     platform: "TikTok",
     status: "Posted",
     date: "Sat, 12:00 PM",
-    thumbnail: leatherBelt,
+    thumbnail: camelCoat,
   },
   {
     id: "4",
-    title: "Cashmere Coat Campaign",
+    title: "Wool Trousers Edit",
     type: "image",
     platform: "Instagram",
     status: "Posted",
     date: "Fri, 4:15 PM",
-    thumbnail: cashmereCoat,
+    thumbnail: woolTrousers,
   },
 ];
 

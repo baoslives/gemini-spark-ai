@@ -21,19 +21,20 @@ serve(async (req) => {
 
     console.log("Optimizing prompt:", { prompt, hasReferenceImage });
 
-    const systemPrompt = `You are an expert prompt engineer specializing in AI image generation for product photography and mockups. Your task is to take a user's rough prompt and transform it into a detailed, professional prompt that will generate stunning product mockup images.
+    const systemPrompt = `You are an expert prompt engineer specializing in AI image generation for luxury fashion photography and editorial mockups. Your task is to take a user's rough prompt and transform it into a detailed, professional prompt that will generate stunning fashion product mockup images.
 
 Guidelines:
 - Enhance the prompt with specific details about lighting, composition, and atmosphere
-- Add professional photography terminology (bokeh, rim lighting, macro, etc.)
-- Include details about textures, materials, and surfaces
-- Specify camera angles and depth of field when relevant
-- Add color grading and mood descriptors
-- Keep the prompt focused on the product while enhancing the scene
+- Add professional fashion photography terminology (editorial, lookbook, campaign, flat-lay, etc.)
+- Include details about textures, fabrics, and materials (leather grain, cashmere weave, silk sheen)
+- Specify warm, earthy tones: camel, burnt orange, ivory, cognac, sand, terracotta
+- Add styling context: Parisian streets, minimalist interiors, textured surfaces
+- Include camera angles and depth of field when relevant
+- Keep the prompt focused on the product while enhancing the editorial scene
 - If the user mentions a reference image, incorporate its style into the optimization
 - Always output just the optimized prompt text, nothing else
 
-${hasReferenceImage ? `Note: The user has uploaded a reference image. ${referenceImageDescription ? `Description: ${referenceImageDescription}` : 'Consider incorporating similar styling, lighting, and composition from their reference.'}` : ''}`;
+${hasReferenceImage ? \`Note: The user has uploaded a reference image. \${referenceImageDescription ? \`Description: \${referenceImageDescription}\` : 'Consider incorporating similar styling, lighting, and composition from their reference.'}\` : ''}\`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

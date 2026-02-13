@@ -156,10 +156,10 @@ export const StudioMockup = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-semibold text-foreground mb-2">
-            Realistic Merchandise Mockups for Your Product
+            Stunning Fashion Mockups for Your Collection
           </h1>
           <p className="text-muted-foreground">
-            Upload your product images to generate realistic mockups for your brand.
+            Upload your product images to generate editorial-quality mockups for your fashion brand.
           </p>
         </div>
 

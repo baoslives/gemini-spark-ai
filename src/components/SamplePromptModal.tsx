@@ -1,11 +1,11 @@
 import { X } from "lucide-react";
 
-// Sample prompt images - using existing assets
-import greenGemRing from "@/assets/green-gem-ring.png";
-import goldNecklace from "@/assets/gold-necklace.png";
-import emeraldEarringsBox from "@/assets/emerald-earrings-box.png";
-import gemOnRock from "@/assets/gem-on-rock.png";
-import pinkGemRing from "@/assets/pink-gem-ring.png";
+// Sample prompt images - using fashion assets
+import leatherHandbag from "@/assets/leather-handbag.png";
+import silkScarf from "@/assets/silk-scarf.png";
+import leatherBelt from "@/assets/leather-belt.png";
+import leatherLoafers from "@/assets/leather-loafers.png";
+import cashmereCoat from "@/assets/cashmere-coat.png";
 
 interface SamplePrompt {
   id: number;
@@ -16,28 +16,28 @@ interface SamplePrompt {
 const samplePrompts: SamplePrompt[] = [
   {
     id: 1,
-    image: greenGemRing,
-    prompt: "A high-detail macro shot of a [Product] worn on a well-manicured hand. Soft skin texture, elegant finger pose, soft-focus studio background with warm rim lighting. 8k resolution, photorealistic",
+    image: leatherHandbag,
+    prompt: "A high-end editorial shot of a [Product] held by a model in a neutral linen outfit. Soft natural light from a tall window, warm camel and cream tones, shallow depth of field. Luxury fashion magazine aesthetic, 8k resolution, photorealistic",
   },
   {
     id: 2,
-    image: goldNecklace,
-    prompt: "A cinematic close-up of a [Product] on a model's neck. Focus on the metal shimmer and gemstone clarity. Neutral skin tones, elegant collarbone detail, soft diffused daylight coming from a side window.",
+    image: silkScarf,
+    prompt: "A cinematic flat-lay of a [Product] artfully draped on a textured sandstone surface. Warm golden hour lighting casting long shadows, burnt orange and ivory tones. Styled with dried botanicals and a leather journal.",
   },
   {
     id: 3,
-    image: emeraldEarringsBox,
-    prompt: "A professional product mockup of a [Product] placed on a polished marble surface. Background features architectural shadows and a minimalist vase with dried pampas grass. High-end magazine aesthetic, clean and airy",
+    image: leatherBelt,
+    prompt: "A professional product mockup of a [Product] placed on a rich walnut wood surface. Background features soft-focus linen fabric and a brass tray. Warm studio lighting, high-end fashion campaign aesthetic, clean and refined",
   },
   {
     id: 4,
-    image: gemOnRock,
-    prompt: "A [Product] resting on fine, dry white sand. Natural bright sunlight creating sharp, rhythmic shadows. Background features soft sea foam and turquoise water in the distance. Tropical, coastal atmosphere.",
+    image: leatherLoafers,
+    prompt: "A [Product] styled on a Parisian cobblestone street. Soft morning light, muted earth tones, with blurred café terrace in the background. Editorial fashion photography, aspirational lifestyle mood.",
   },
   {
     id: 5,
-    image: pinkGemRing,
-    prompt: "A [Product] styled on a raw concrete ledge. Gritty texture, cool blue and orange cinematic lighting, urban fashion vibe.",
+    image: cashmereCoat,
+    prompt: "A [Product] draped over a mid-century modern chair. Warm ambient lighting, neutral palette with camel and off-white accents, minimalist interior styling.",
   },
 ];
 

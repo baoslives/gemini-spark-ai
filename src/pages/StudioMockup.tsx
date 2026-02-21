@@ -9,10 +9,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 // Demo generated images for mockup
-import greenGemRing from "@/assets/green-gem-ring.png";
-import emeraldRingModel from "@/assets/emerald-ring-model.png";
-import pinkGemRing from "@/assets/pink-gem-ring.png";
-import gemOnRock from "@/assets/gem-on-rock.png";
+import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
+import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
+import wrapCoatModel from "@/assets/wrap-coat-model.jpg";
+import cashmereKnit from "@/assets/cashmere-knit.jpg";
 
 export const StudioMockup = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -130,7 +130,7 @@ export const StudioMockup = () => {
     setIsGenerating(true);
     // Simulate generation with demo images
     setTimeout(() => {
-      setGeneratedImages([greenGemRing, emeraldRingModel, pinkGemRing, gemOnRock]);
+      setGeneratedImages([modelSilkBlouse, modelWoolBlazer, wrapCoatModel, cashmereKnit]);
       setIsGenerating(false);
     }, 1500);
   };

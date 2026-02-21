@@ -126,9 +126,6 @@ export const AIAgent = () => {
             <Settings className="w-3.5 h-3.5" />
             <span>Settings</span>
           </button>
-          <span className="text-xs text-orange-500 border border-orange-300 rounded-full px-3 py-1">
-            No models configured. Click Settings to configure.
-          </span>
         </div>
         <button onClick={newConversation} className="text-sm text-foreground hover:underline">
           New Conversation

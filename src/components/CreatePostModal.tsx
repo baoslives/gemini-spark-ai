@@ -4,6 +4,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { usePosts, type Post } from "@/contexts/PostsContext";
+import { toast } from "sonner";
 
 interface CreatePostModalProps {
   media: string[];
@@ -17,6 +19,7 @@ const platforms = [
 ];
 
 export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
+  const { addPost } = usePosts();
   const [view, setView] = useState<"edit" | "schedule">("edit");
   const [selectedPlatforms, setSelectedPlatforms] = useState(
     platforms.map((p, i) => ({ ...p, selected: i === 0 }))
@@ -32,8 +35,43 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
     );
   };
 
+  const getSelectedPlatformNames = () => {
+    const platformMap: Record<string, string> = { instagram: "Instagram", facebook: "Facebook", twitter: "X" };
+    return selectedPlatforms.filter(p => p.selected).map(p => ({ name: platformMap[p.id] || p.name }));
+  };
+
+  const createPost = (status: Post["status"], scheduledDate?: string, scheduledTime?: string) => {
+    const newPost: Post = {
+      id: `user-${Date.now()}`,
+      platforms: getSelectedPlatformNames(),
+      media: media[0],
+      mediaType: "image",
+      hasCarousel: media.length > 1,
+      status,
+      scheduledDate,
+      scheduledTime,
+      title: aiCaption.substring(0, 20) + "...",
+      caption: aiCaption,
+    };
+    addPost(newPost);
+    onClose();
+  };
+
+  const handlePublish = () => {
+    createPost("posted");
+    toast.success("Post published successfully!");
+  };
+
+  const handleSaveDraft = () => {
+    createPost("draft");
+    toast.success("Post saved as draft!");
+  };
+
   if (view === "schedule") {
-    return <ScheduleView onClose={onClose} onBack={() => setView("edit")} />;
+    return <ScheduleView onClose={onClose} onBack={() => setView("edit")} onSchedule={(date, time) => {
+      createPost("scheduled", date, time);
+      toast.success("Post scheduled successfully!");
+    }} />;
   }
 
   return (
@@ -166,7 +204,7 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
 
             {/* Action Buttons */}
             <div className="space-y-2">
-              <button className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
+              <button onClick={handlePublish} className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
                 Publish
               </button>
               <button 
@@ -176,7 +214,7 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
                 <CalendarIcon className="w-4 h-4" />
                 Schedule Post
               </button>
-              <button className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
+              <button onClick={handleSaveDraft} className="w-full py-3 border rounded-xl text-sm flex items-center justify-center gap-2 hover:bg-muted transition-colors">
                 <Upload className="w-4 h-4" />
                 Save as Draft
               </button>
@@ -195,7 +233,7 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
 };
 
 // Schedule View Component
-const ScheduleView = ({ onClose, onBack }: { onClose: () => void; onBack: () => void }) => {
+const ScheduleView = ({ onClose, onBack, onSchedule }: { onClose: () => void; onBack: () => void; onSchedule: (date: string, time: string) => void }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState("7:15 PM");
   const [dateOpen, setDateOpen] = useState(false);
@@ -315,7 +353,13 @@ const ScheduleView = ({ onClose, onBack }: { onClose: () => void; onBack: () => 
 
           {/* Action Buttons */}
           <div className="space-y-2 pt-4">
-            <button className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium">
+            <button 
+              onClick={() => {
+                const dateStr = selectedDate ? format(selectedDate, "EEE, MMM d") : "Today";
+                onSchedule(dateStr, selectedTime);
+              }}
+              className="w-full py-3 bg-foreground text-background rounded-xl text-sm font-medium"
+            >
               Schedule Post
             </button>
             <button 

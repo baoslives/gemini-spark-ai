@@ -5,6 +5,7 @@ import { Studio } from "@/pages/Studio";
 import { StudioMockup } from "@/pages/StudioMockup";
 import { OutputGallery } from "@/pages/OutputGallery";
 import { Assets } from "@/pages/Assets";
+import { AIAgent } from "@/pages/AIAgent";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -21,6 +22,9 @@ const Index = () => {
         return <OutputGallery />;
       case "assets":
         return <Assets />;
+      case "ai-agent":
+      case "ai-agent-history":
+        return <AIAgent />;
       default:
         return <Home />;
     }

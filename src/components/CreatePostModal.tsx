@@ -93,9 +93,12 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
             {/* Caption Prompt */}
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">Instructions prompt for caption:</p>
-              <div className="p-3 bg-muted/50 rounded-lg text-sm">
-                {captionPrompt}
-              </div>
+              <textarea
+                value={captionPrompt}
+                onChange={(e) => setCaptionPrompt(e.target.value)}
+                className="w-full p-3 border rounded-lg text-sm bg-background resize-none min-h-[80px] focus:outline-none focus:ring-2 focus:ring-ring"
+                placeholder="describe the diamond ring elegant for me"
+              />
               <button className="flex items-center gap-2 px-4 py-3 bg-foreground text-background rounded-lg text-sm">
                 <Sparkles className="w-4 h-4" />
                 Generate Caption
@@ -105,9 +108,12 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
             {/* AI Caption Suggest */}
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">AI Caption Suggest:</p>
-              <div className="p-4 bg-muted/30 rounded-lg text-sm whitespace-pre-wrap border-l-2 border-muted-foreground/30">
-                {aiCaption}
-              </div>
+              <textarea
+                value={aiCaption}
+                onChange={(e) => setAiCaption(e.target.value)}
+                className="w-full p-4 border rounded-lg text-sm bg-background resize-none min-h-[120px] focus:outline-none focus:ring-2 focus:ring-ring"
+                placeholder="Generated caption or type your own..."
+              />
             </div>
           </div>
 

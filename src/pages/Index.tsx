@@ -6,6 +6,7 @@ import { StudioMockup } from "@/pages/StudioMockup";
 import { OutputGallery } from "@/pages/OutputGallery";
 import { Assets } from "@/pages/Assets";
 import { AIAgent } from "@/pages/AIAgent";
+import { PostsProvider } from "@/contexts/PostsContext";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -31,13 +32,15 @@ const Index = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-      
-      <main className="flex-1 ml-44">
-        {renderContent()}
-      </main>
-    </div>
+    <PostsProvider>
+      <div className="flex min-h-screen bg-background">
+        <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        
+        <main className="flex-1 ml-44">
+          {renderContent()}
+        </main>
+      </div>
+    </PostsProvider>
   );
 };
 

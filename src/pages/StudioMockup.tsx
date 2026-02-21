@@ -9,10 +9,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 // Demo generated images for mockup
-import modelSilkBlouse from "@/assets/model-silk-blouse.jpg";
-import modelWoolBlazer from "@/assets/model-wool-blazer.jpg";
-import wrapCoatModel from "@/assets/wrap-coat-model.jpg";
-import cashmereKnit from "@/assets/cashmere-knit.jpg";
+import trenchCoat1 from "@/assets/trench-coat-1.jpg";
+import trenchCoat2 from "@/assets/trench-coat-2.jpg";
+import trenchCoat3 from "@/assets/trench-coat-3.jpg";
+import trenchCoat4 from "@/assets/trench-coat-4.jpg";
 
 export const StudioMockup = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -130,7 +130,7 @@ export const StudioMockup = () => {
     setIsGenerating(true);
     // Simulate generation with demo images
     setTimeout(() => {
-      setGeneratedImages([modelSilkBlouse, modelWoolBlazer, wrapCoatModel, cashmereKnit]);
+      setGeneratedImages([trenchCoat1, trenchCoat2, trenchCoat3, trenchCoat4]);
       setIsGenerating(false);
     }, 1500);
   };

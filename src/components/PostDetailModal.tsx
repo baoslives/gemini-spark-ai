@@ -112,11 +112,11 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
               <div className="flex items-center justify-between p-3 border-b">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-emerald-600 flex items-center justify-center text-white text-xs font-bold">
-                    DG
+                    MR
                   </div>
                   <div>
-                    <p className="text-sm font-semibold">Desiree Gems</p>
-                    <p className="text-xs text-muted-foreground">Singapore, Singapore</p>
+                    <p className="text-sm font-semibold">Maison Rivière</p>
+                    <p className="text-xs text-muted-foreground">Paris, France</p>
                   </div>
                 </div>
                 <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
@@ -232,7 +232,7 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
                   </p>
                 ) : null}
                 <p className="text-sm">
-                  <span className="font-semibold">Desiree Gems</span>{" "}
+                  <span className="font-semibold">Maison Rivière</span>{" "}
                   {caption.split("\n")[0]}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -333,10 +333,10 @@ export const PostDetailModal = ({ post, onClose, onUpdate }: PostDetailModalProp
           <div className="bg-background border rounded-xl overflow-hidden mb-6">
             <div className="flex items-center gap-2 p-3 border-b">
               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-amber-400 to-emerald-600 flex items-center justify-center text-white text-[8px] font-bold">
-                DG
+                MR
               </div>
               <div>
-                <p className="text-xs font-semibold">Desiree Gems</p>
+                <p className="text-xs font-semibold">Maison Rivière</p>
                 <p className="text-[10px] text-muted-foreground">3 min</p>
               </div>
             </div>

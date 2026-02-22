@@ -48,7 +48,7 @@ export const ChatContainer = () => {
         role: "system",
         content: systemPromptText,
         type: "system-prompt",
-        metadata: { fileName: "Desireegem_brandguide.pdf" },
+        metadata: { fileName: "MaisonRiviere_brandguide.pdf" },
       };
 
       const userMessage: Message = {

@@ -9,10 +9,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 // Demo generated images for mockup
-import trenchCoat1 from "@/assets/trench-coat-1.jpg";
-import trenchCoat2 from "@/assets/trench-coat-2.jpg";
-import trenchCoat3 from "@/assets/trench-coat-3.jpg";
-import trenchCoat4 from "@/assets/trench-coat-4.jpg";
+import trenchCoat1 from "@/assets/trench-coat-1.png";
+import trenchCoat2 from "@/assets/trench-coat-2.png";
+import trenchCoat3 from "@/assets/trench-coat-3.png";
+import trenchCoat4 from "@/assets/trench-coat-4.png";
 
 export const StudioMockup = () => {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);

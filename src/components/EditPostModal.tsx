@@ -147,12 +147,12 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
             {/* Instagram-style preview */}
             <div className="border rounded-xl overflow-hidden">
               <div className="flex items-center gap-3 p-3 border-b">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
-                  DG
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-xs font-bold">
+                  MR
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-semibold">Desiree Gems</p>
-                  <p className="text-xs text-muted-foreground">Singapore, Singapore</p>
+                  <p className="text-sm font-semibold">Maison Rivière</p>
+                  <p className="text-xs text-muted-foreground">Paris, France</p>
                 </div>
                 <MoreHorizontal className="w-5 h-5" />
               </div>
@@ -180,7 +180,7 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
                   <Bookmark className="w-6 h-6" />
                 </div>
                 <p className="text-sm">
-                  <strong>Desiree Gems</strong> {aiCaption}
+                  <strong>Maison Rivière</strong> {aiCaption}
                 </p>
               </div>
             </div>

@@ -24,10 +24,10 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(
     platforms.map((p, i) => ({ ...p, selected: i === 0 }))
   );
-  const [captionPrompt, setCaptionPrompt] = useState("help me write a caption with the taglines #FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle");
-  const [aiCaption, setAiCaption] = useState(`What do you think of the design? Drop a '🔥' in the comments if you'd wear this!"
+  const [captionPrompt, setCaptionPrompt] = useState("help me write a caption with the taglines #QuietLuxury #TimelessStyle #MaisonRivière #EditorialFashion");
+  const [aiCaption, setAiCaption] = useState(`Effortless elegance, redefined. Our latest collection speaks to those who know — true luxury whispers.
 
-#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle`);
+#QuietLuxury #TimelessStyle #MaisonRivière #EditorialFashion`);
 
   const togglePlatform = (id: string) => {
     setSelectedPlatforms(prev => 
@@ -135,7 +135,7 @@ export const CreatePostModal = ({ media, onClose }: CreatePostModalProps) => {
                 value={captionPrompt}
                 onChange={(e) => setCaptionPrompt(e.target.value)}
                 className="w-full p-3 border rounded-lg text-sm bg-background resize-none min-h-[80px] focus:outline-none focus:ring-2 focus:ring-ring"
-                placeholder="describe the diamond ring elegant for me"
+                placeholder="describe the cashmere coat editorial for me"
               />
               <button className="flex items-center gap-2 px-4 py-3 bg-foreground text-background rounded-lg text-sm">
                 <Sparkles className="w-4 h-4" />

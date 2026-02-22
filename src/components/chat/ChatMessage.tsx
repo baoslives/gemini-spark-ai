@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { FileText, Palette, Film, CheckCircle2, TrendingUp, AlertTriangle, Play, Trash2 } from "lucide-react";
-import greenGemRing from "@/assets/green-gem-ring.png";
+import trenchCoat from "@/assets/trench-coat-1.png";
 import ringVideo from "@/assets/ring-video.mp4";
 
 interface ChatMessageProps {
@@ -76,11 +76,11 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Palette className="w-4 h-4 text-amber-500 animate-pulse-soft" />
-                <span>🎨 Generating image: young woman wearing the green gem ring</span>
+                <span>🎨 Generating image: model in beige trench coat, editorial setting</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Film className="w-4 h-4 text-amber-500 animate-pulse-soft" />
-                <span>🎞 Creating a 5s product video clip with branding and shimmer animation</span>
+                <span>🎞 Creating a 5s lookbook video clip with cinematic styling</span>
               </div>
             </div>
           </div>
@@ -98,8 +98,8 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
               <div className="space-y-2">
                 <p className="text-xs text-muted-foreground font-medium">Image Preview</p>
                 <img 
-                  src={greenGemRing} 
-                  alt="Young woman wearing green gem ring" 
+                  src={trenchCoat} 
+                  alt="Model wearing beige trench coat" 
                   className="rounded-lg w-full aspect-[4/5] object-cover border"
                 />
               </div>
@@ -120,15 +120,15 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
                 <p className="text-xs text-muted-foreground mb-1">📄 Caption (EN):</p>
                 <p className="text-sm">
                   Elegant. Timeless. Unapologetically you.<br />
-                  Discover the beauty of our new Green Gem Ring – a perfect match for your everyday confidence.<br />
-                  <span className="text-muted-foreground">#GreenGem #JewelryGoals #EverydayLuxury #WorkStyle</span>
+                  The perfect trench — crafted for those who move with quiet confidence.<br />
+                  <span className="text-muted-foreground">#QuietLuxury #TrenchCoat #EditorialStyle #MaisonRivière</span>
                 </p>
               </div>
               <div className="p-3 bg-secondary rounded-lg">
                 <p className="text-xs text-muted-foreground mb-1">📄 RedNote 中文文案：</p>
                 <p className="text-sm">
-                  「优雅，永恒，自信。」全新绿色宝石戒指，专为日常闪耀而生。<br />
-                  <span className="text-muted-foreground">#绿宝石戒指 #轻奢风格 #自信穿搭 #日常珠宝</span>
+                  「优雅，永恒，自信。」经典风衣，为从容自信的你而生。<br />
+                  <span className="text-muted-foreground">#经典风衣 #轻奢风格 #法式穿搭 #高级时装</span>
                 </p>
               </div>
             </div>
@@ -336,9 +336,9 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
             
             <div className="space-y-3">
               <div className="p-3 bg-secondary rounded-lg">
-                <p className="font-medium text-sm">1. "Behind the Ring" Story (Tue or Wed)</p>
+                <p className="font-medium text-sm">1. "Behind the Atelier" Story (Tue or Wed)</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Showcase craftsmanship, brand values, and how the ring is made. Softly reminds users of your process & ethics.
+                  Showcase craftsmanship, fabric sourcing, and tailoring process. Softly reminds users of your heritage & quality.
                 </p>
                 <p className="text-xs text-emerald mt-2">🎯 Builds trust → good timing after recent KOL noise.</p>
               </div>
@@ -346,7 +346,7 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
               <div className="p-3 bg-secondary rounded-lg">
                 <p className="font-medium text-sm">2. User-Generated Content Push (Fri)</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Curate reposts from actual customers wearing your pieces. Add "tag us to be featured" CTA.
+                  Curate reposts from actual customers styling your outerwear. Add "tag us to be featured" CTA.
                 </p>
                 <p className="text-xs text-emerald mt-2">🎯 Increases authenticity + engagement</p>
               </div>
@@ -354,7 +354,7 @@ export const ChatMessage = ({ role, content, type = "text", metadata }: ChatMess
               <div className="p-3 bg-secondary rounded-lg">
                 <p className="font-medium text-sm">3. RedNote Mini-Campaign (Weekend)</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Topic: "How to Style Green Jewelry for Work"<br />
+                  Topic: "How to Style a Trench Coat for Work"<br />
                   Add carousel + captions in simplified Chinese
                 </p>
                 <p className="text-xs text-gold-light bg-amber-500/20 inline-block px-2 py-0.5 rounded mt-2">

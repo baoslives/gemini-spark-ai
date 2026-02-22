@@ -37,10 +37,10 @@ export const EditPostModal = ({ post, onClose }: EditPostModalProps) => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(
     platforms.map(p => ({ ...p, selected: post.platforms.some(pp => pp.name.toLowerCase() === p.id) }))
   );
-  const [captionPrompt, setcaptionPrompt] = useState("help me write a caption with the taglines #FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle");
-  const [aiCaption, setAiCaption] = useState(`What do you think of the design? Drop a '🔥' in the comments if you'd wear this!"
+  const [captionPrompt, setcaptionPrompt] = useState("help me write a caption with the taglines #QuietLuxury #TimelessStyle #MaisonRivière #EditorialFashion");
+  const [aiCaption, setAiCaption] = useState(`Effortless elegance, redefined. Our latest collection speaks to those who know — true luxury whispers.
 
-#FineJewelry #EmeraldElegance #StatementRing #LuxuryStyle`);
+#QuietLuxury #TimelessStyle #MaisonRivière #EditorialFashion`);
 
   const togglePlatform = (id: string) => {
     setSelectedPlatforms(prev => 
